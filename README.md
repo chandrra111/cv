@@ -67,30 +67,41 @@ The contact form currently shows a friendly "not connected yet" message instead 
 
 ## Deploying to GitHub Pages
 
-**Option A — dedicated `chandrra111.github.io` repo (recommended, matches your GitHub handle):**
+This site is set up to publish from your existing **`github.com/chandrra111/cv`** repo (it was empty, so there's nothing to preserve or merge). The local folder is already a git repo, committed, with `origin` pointed at that repo. All that's left is to push:
 
 ```bash
 # from inside the portfolio/ folder
-git init
-git add -A
-git commit -m "Launch executive portfolio"
-git branch -M main
-git remote add origin https://github.com/chandrra111/chandrra111.github.io.git
 git push -u origin main
 ```
 
-Your site will be live at `https://chandrra111.github.io/` within a minute or two — no GitHub Pages settings to configure, since a repo named `<username>.github.io` is served automatically.
+You'll be prompted to authenticate — either sign in via the browser popup, or use a [GitHub personal access token](https://github.com/settings/tokens) as the password if prompted for one.
 
-**Option B — project repo (e.g. `github.com/chandrra111/portfolio`):**
+**Then, one-time only:** on GitHub, go to `github.com/chandrra111/cv` → **Settings → Pages** → under "Build and deployment", set **Source: Deploy from a branch**, **Branch: `main`**, folder **`/ (root)`** → **Save**.
 
-Push the same way to a repo of any name, then in the repo's **Settings → Pages**, set the source to the `main` branch, root folder. Your site will be live at `https://chandrra111.github.io/portfolio/`.
+Within a minute or two, your site will be live at:
 
-If you go with Option B, update the `og:url`, `canonical`, and `sitemap.xml`/`robots.txt` URLs in `index.html`/`sitemap.xml` to match the actual path.
+```
+https://chandrra111.github.io/cv/
+```
+
+All URLs in this project (canonical link, Open Graph tags, JSON-LD, sitemap.xml, robots.txt) are already set to that address. If you ever rename the repo or move the site elsewhere, search-and-replace `chandrra111.github.io/cv` across `index.html`, `sitemap.xml`, and `robots.txt`.
+
+### Making future edits
+
+After the first push, any update is just:
+
+```bash
+git add -A
+git commit -m "Describe what changed"
+git push
+```
+
+GitHub Pages redeploys automatically within a minute of each push.
 
 ## Before you publish — things to double check
 
 - **Contact form** — must be configured (see above) or messages silently won't arrive.
-- **LinkedIn URL** — confirm `linkedin.com/in/balachandra-srinevasalu` is your live vanity URL (your PDF resume lists a shortened `lnkd.in` link instead; the vanity URL was used here as it's cleaner for print/screen).
+- **LinkedIn URL** — set to `linkedin.com/in/chandrra` throughout the site.
 - **Compensation/notice period** — deliberately left off this public site (unlike your internal CV drafts), since that's negotiation-sensitive information; keep it in your private resume/cover letter instead.
 - **Publications/Insights section** — currently a placeholder pointing to your LinkedIn, since no existing articles were found. Once you publish your first piece, add it as a card in `data.js` under `insights`.
 - **Testimonials** — the brief asked for a testimonials section, but no existing recommendations were available to use truthfully. Recommend pulling 2–3 LinkedIn recommendations (with permission) and adding them as a new section before your next round of outreach.

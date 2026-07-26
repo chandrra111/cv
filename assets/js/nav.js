@@ -1,0 +1,50 @@
+export function initNav() {
+  const header = document.getElementById("siteHeader");
+  const navToggle = document.getElementById("navToggle");
+  const navLinks = document.getElementById("navLinks");
+  const toTop = document.getElementById("toTop");
+
+  const onScroll = () => {
+    const scrolled = window.scrollY > 12;
+    header.classList.toggle("scrolled", scrolled);
+    toTop.classList.toggle("show", window.scrollY > 600);
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  navToggle.addEventListener("click", () => {
+    const open = navLinks.classList.toggle("mobile-open");
+    navToggle.setAttribute("aria-expanded", String(open));
+  });
+
+  navLinks.querySelectorAll("a").forEach((a) => {
+    a.addEventListener("click", () => {
+      navLinks.classList.remove("mobile-open");
+      navToggle.setAttribute("aria-expanded", "false");
+    });
+  });
+
+  toTop.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  // Scrollspy
+  const sections = Array.from(document.querySelectorAll("main > section[id]"));
+  const navByHash = new Map();
+  navLinks.querySelectorAll("a[href^='#']").forEach((a) => navByHash.set(a.getAttribute("href"), a));
+
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const link = navByHash.get(`#${entry.target.id}`);
+        if (!link) return;
+        if (entry.isIntersecting) {
+          navByHash.forEach((l) => l.classList.remove("active"));
+          link.classList.add("active");
+        }
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
+  );
+  sections.forEach((s) => spy.observe(s));
+}

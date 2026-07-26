@@ -1,0 +1,71 @@
+/* ===== Responsive breakpoints ===== */
+
+@media (max-width: 1080px) {
+  .hero-stats { grid-template-columns: repeat(3, 1fr); }
+  .pillars { grid-template-columns: repeat(2, 1fr); }
+  .roadmap { grid-template-columns: repeat(1, 1fr); }
+  .gov-grid { grid-template-columns: repeat(2, 1fr); }
+  .outcomes-grid { grid-template-columns: repeat(2, 1fr); }
+  .program-grid { grid-template-columns: 1fr; }
+  .award-grid { grid-template-columns: repeat(1, 1fr); }
+  .journey-layout { grid-template-columns: 1fr; }
+  .journey-layout aside { order: -1; }
+  .milestones { display: flex; }
+}
+
+@media (max-width: 920px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-photo-wrap { order: -1; width: min(260px, 60%); margin-inline: auto; }
+  .flagship { grid-template-columns: 1fr; }
+  .ai-split { grid-template-columns: 1fr; }
+  .contact-grid { grid-template-columns: 1fr; }
+  .dash-charts { grid-template-columns: 1fr; }
+}
+
+/* Collapse to hamburger well before the 8-item nav + icons get cramped */
+@media (max-width: 1160px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: flex; }
+  .brand-text { max-width: 42vw; }
+  .nav-links.mobile-open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0; right: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px 20px;
+    gap: 2px;
+    box-shadow: var(--shadow-md);
+    max-height: calc(100vh - var(--nav-h));
+    overflow-y: auto;
+  }
+  .nav-links.mobile-open a { padding: 13px 10px; width: 100%; }
+}
+
+@media (max-width: 760px) {
+  :root { --nav-h: 64px; }
+  .brand-text { max-width: 46vw; }
+
+  .hero-stats { grid-template-columns: repeat(2, 1fr); }
+  .cert-grid { grid-template-columns: 1fr; }
+  .dash-grid { grid-template-columns: repeat(2, 1fr); }
+  .pillars { grid-template-columns: 1fr; }
+  .gov-grid { grid-template-columns: 1fr; }
+  .outcomes-grid { grid-template-columns: 1fr; }
+  .tabbar { overflow-x: auto; flex-wrap: nowrap; -webkit-overflow-scrolling: touch; }
+  .tabbar::-webkit-scrollbar { display: none; }
+  .tab-btn { flex-shrink: 0; }
+  .to-top { right: 14px; bottom: 14px; }
+  section { padding-block: 56px; }
+  .quote-block { padding: 26px; }
+}
+
+@media (max-width: 480px) {
+  .container { padding-inline: 18px; }
+  .hero-stats { grid-template-columns: 1fr 1fr; }
+  .dash-grid { grid-template-columns: 1fr 1fr; }
+  .hero-cta .btn { width: 100%; }
+  .hero-cta { flex-direction: column; }
+}

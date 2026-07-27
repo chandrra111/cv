@@ -44,7 +44,7 @@ export const philosophy = {
     {
       title: "Servant Leadership — People First",
       body: "My job is to make my team's careers succeed, not just my roadmap. Accountability and humility scale together.",
-      evidence: "Builds and mentors a 20+ member extended organisation — data engineers, business analysts, BI engineers, AI engineers, and senior managers — plus external vendor and partner resources; coach & judge at Intelli-Fest global hackathons; trained 100+ business users.",
+      evidence: "Leads and mentors a 20+ member high-performing Data & Analytics team, including external vendor and partner resources; coach & judge at Intelli-Fest global hackathons; trained 100+ business users.",
     },
     {
       title: "High Ownership & Accountability",
@@ -66,13 +66,16 @@ export const journey = [
     role: "Head of Technical Delivery — Data & Analytics (Centre of Excellence)",
     location: "Bengaluru",
     highlights: [
-      "Strategic analytics partner to the MD, CFO, and functional leaders at the enterprise level — owns the 3-year enterprise data strategy roadmap.",
-      "Built a centralized Analytics CoE from the ground up, eliminating data silos across Sales, Finance, HR, Procurement, Talent, Supply Chain, and Manufacturing.",
-      "Leads a 20+ member extended organisation — data engineers, business analysts, BI engineers, AI engineers, and senior managers — plus external vendor and partner resources.",
-      "Owns ~$0.42M annual P&L across vendor/contract delivery and cloud infrastructure (Fabric, Databricks, Synapse).",
-      "Leading a ~$260K Databricks Lakehouse modernization program with Unity Catalog governance.",
+      "Enterprise data strategy & roadmap: direct strategic partner to the MD, CFO, and functional leadership — own and drive the 3-year enterprise data & analytics strategy, aligning platform investment, governance, and capability building to enterprise growth priorities.",
+      "Data & AI transformation leadership: leading the enterprise-wide shift from fragmented, siloed reporting to a unified, governed data platform — built the Analytics Centre of Excellence that is the foundation for AI-driven, predictive decision-making across the organisation.",
+      "Platform modernization: directing large-scale modernization from legacy infrastructure to a governed Databricks Lakehouse with Unity Catalog — simplifying the estate and building enterprise-scale AI/ML readiness.",
+      "Data governance & quality: established enterprise-wide governance standards, quality controls, and stewardship practices that ensure trusted, compliant data underpins every executive decision.",
+      "Stakeholder management & executive influence: the primary data & analytics partner to the C-suite, translating enterprise priorities into technology investment decisions and building organisation-wide trust in data as a strategic asset.",
+      "Organisational capability building: built and leads a high-performing 20+ member Data & Analytics team — data engineers, business analysts, BI engineers, and AI engineers — plus external vendor and partner resources, with a focus on talent development and succession planning.",
+      "Business value realization: ~$105K+ in annual platform savings, ~75% faster enterprise reporting performance, and ~$0.42M in P&L under direct ownership — technology investment translated into measurable business outcomes.",
+      "Player-coach leadership style: pairs enterprise-level strategic ownership with deep platform fluency, setting the technical bar for the organisation while operating at the executive level.",
     ],
-    tags: ["Data Strategy", "P&L Ownership", "Vendor & Partner Management", "Databricks", "Microsoft Fabric", "Governance"],
+    tags: ["Enterprise Data Strategy", "Digital Transformation", "Data Governance", "Stakeholder Management", "P&L Ownership", "Team Leadership"],
     logoInitial: "P",
   },
   {
@@ -400,6 +403,9 @@ export const speakingAvailability =
 
 export const certifications = [
   { name: "Professional Certificate in Data Science & Artificial Intelligence", issuer: "IIM Kozhikode (IIMK)", year: "2024" },
+  { name: "Digital Personal Data Protection Act (DPDP), 2023 — Certificate Course & Examination", issuer: "DPDPA.com", year: "2026" },
+  { name: "Leadership and Talent Management — NPTEL+ Workshop", issuer: "IIT Roorkee (Dept. of Management Studies)", year: "2026" },
+  { name: "Step Up To Leadership", issuer: "Dale Carnegie & Associates, Inc.", year: "2024" },
   { name: "Microsoft Certified: Data Analyst Associate — DA-100", issuer: "Microsoft", year: "2021" },
   { name: "Microsoft Certified: Azure AI Fundamentals — AI-900", issuer: "Microsoft", year: "2021" },
   { name: "Microsoft Certified: Power Platform Fundamentals — PL-900", issuer: "Microsoft", year: "2021" },

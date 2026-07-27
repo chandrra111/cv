@@ -230,7 +230,7 @@ function renderSpeaking() {
   if (avail) avail.textContent = speakingAvailability;
 }
 
-const CERT_INITIALS = ["IIMK", "DA", "AI", "PL", "DP", "AZ", "SM", "IT"];
+const CERT_INITIALS = ["IIMK", "DPDP", "NPTEL", "DC", "DA", "AI", "PL", "DP", "AZ", "SM", "IT"];
 
 function renderCertifications() {
   const el = $("certGrid");

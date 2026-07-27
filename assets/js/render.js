@@ -6,7 +6,14 @@ import {
 
 const $ = (id) => document.getElementById(id);
 
-function statChip({ value, prefix = "", suffix = "", decimals = 0, label }) {
+function statChip({ value, prefix = "", suffix = "", decimals = 0, label, text }) {
+  if (text !== undefined) {
+    return `
+      <div class="stat">
+        <span class="stat-value">${text}</span>
+        <span class="stat-label">${label}</span>
+      </div>`;
+  }
   return `
     <div class="stat">
       <span class="stat-value" data-value="${value}" data-prefix="${prefix}" data-suffix="${suffix}" data-decimals="${decimals}">${prefix}0${suffix}</span>

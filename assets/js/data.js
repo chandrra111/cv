@@ -21,10 +21,10 @@ export const profile = {
 export const heroStats = [
   { value: 23, suffix: "+", label: "Years, Enterprise Data & Analytics" },
   { value: 0.42, prefix: "$", suffix: "M", decimals: 2, label: "Annual P&L Owned" },
-  { value: 13, suffix: "", label: "Analytics Professionals Led" },
-  { value: 7, suffix: "", label: "Business Verticals Unified" },
+  { value: 20, suffix: "+", label: "Team Led — Engineers, Analysts, Managers & Partners" },
+  { text: "Enterprise-Wide", label: "Data & Analytics Coverage" },
   { value: 300, suffix: "+", label: "BI Reports Modernized" },
-  { value: 1, prefix: "₹", suffix: "Cr+", label: "Annual Savings Delivered" },
+  { value: 105, prefix: "$", suffix: "K+", label: "Annual Savings Delivered" },
 ];
 
 export const philosophy = {
@@ -34,7 +34,7 @@ export const philosophy = {
     {
       title: "Strategic Visionary & Transformation Agent",
       body: "I look past the next dashboard request to the capability the business will need in three years — then build the roadmap, budget, and platform to get there.",
-      evidence: "Owns Pidilite's 3-year enterprise data strategy; leading the ₹2.5Cr Databricks Lakehouse migration.",
+      evidence: "Owns Pidilite's 3-year enterprise data strategy; leading the ~$260K Databricks Lakehouse migration.",
     },
     {
       title: "C-Suite Partnership & Executive Influence",
@@ -44,7 +44,7 @@ export const philosophy = {
     {
       title: "Servant Leadership — People First",
       body: "My job is to make my team's careers succeed, not just my roadmap. Accountability and humility scale together.",
-      evidence: "Built and mentors a 13-member analytics org; coach & judge at Intelli-Fest global hackathons; trained 100+ business users.",
+      evidence: "Builds and mentors a 20+ member extended organisation — data engineers, business analysts, BI engineers, AI engineers, and senior managers — plus external vendor and partner resources; coach & judge at Intelli-Fest global hackathons; trained 100+ business users.",
     },
     {
       title: "High Ownership & Accountability",
@@ -66,12 +66,13 @@ export const journey = [
     role: "Head of Technical Delivery — Data & Analytics (Centre of Excellence)",
     location: "Bengaluru",
     highlights: [
-      "Strategic analytics partner to the MD, CFO, and functional leaders across 7 business verticals — owns the 3-year enterprise data strategy roadmap.",
+      "Strategic analytics partner to the MD, CFO, and functional leaders at the enterprise level — owns the 3-year enterprise data strategy roadmap.",
       "Built a centralized Analytics CoE from the ground up, eliminating data silos across Sales, Finance, HR, Procurement, Talent, Supply Chain, and Manufacturing.",
+      "Leads a 20+ member extended organisation — data engineers, business analysts, BI engineers, AI engineers, and senior managers — plus external vendor and partner resources.",
       "Owns ~$0.42M annual P&L across vendor/contract delivery and cloud infrastructure (Fabric, Databricks, Synapse).",
-      "Leading a ~₹2.5Cr Databricks Lakehouse modernization program with Unity Catalog governance.",
+      "Leading a ~$260K Databricks Lakehouse modernization program with Unity Catalog governance.",
     ],
-    tags: ["Data Strategy", "P&L Ownership", "Databricks", "Microsoft Fabric", "Governance"],
+    tags: ["Data Strategy", "P&L Ownership", "Vendor & Partner Management", "Databricks", "Microsoft Fabric", "Governance"],
     logoInitial: "P",
   },
   {
@@ -143,7 +144,7 @@ export const strategyPhases = [
     status: "done",
     points: [
       "Stood up centralized Analytics CoE — standardized tools, data models, and delivery frameworks.",
-      "Baselined data governance and quality controls across 7 business verticals.",
+      "Baselined data governance and quality controls at the enterprise level.",
     ],
   },
   {
@@ -152,7 +153,7 @@ export const strategyPhases = [
     period: "2024 — 2025",
     status: "done",
     points: [
-      "Migrated 300+ Power BI reports from Analysis Services to Microsoft Fabric — ₹1Cr+ annual savings.",
+      "Migrated 300+ Power BI reports from Analysis Services to Microsoft Fabric — $105K+ annual savings.",
       "Optimized ~10 enterprise semantic models (~3GB each), cutting report load time by ~75% for 200–300 sales teams.",
     ],
   },
@@ -250,7 +251,7 @@ export const cloudPlatforms = {
 
 export const dashboardKpis = [
   { value: "300+", label: "Reports migrated to Fabric" },
-  { value: "₹1Cr+", label: "Annual platform savings" },
+  { value: "$105K+", label: "Annual platform savings" },
   { value: "200–300", label: "Sales teams impacted" },
   { value: "75%", label: "Faster report load time" },
 ];
@@ -267,21 +268,21 @@ export const dashboardCharts = {
 };
 
 export const outcomes = [
-  { value: 1, prefix: "₹", suffix: "Cr+", label: "Annual savings — Fabric platform consolidation (2024)" },
+  { value: 105, prefix: "$", suffix: "K+", label: "Annual savings — Fabric platform consolidation (2024)" },
   { value: 75, suffix: "%", label: "Faster report load/query performance for 200–300 sales teams (2025)" },
   { value: 100, suffix: "+", label: "FTE hours/month saved by eliminating manual Excel reporting" },
   { value: 300, suffix: "+", label: "Power BI reports modernized to Microsoft Fabric" },
   { value: 50, suffix: "+", label: "Global finance analytics solutions delivered (Cash Flow, Treasury, OPEX)" },
   { value: 43, suffix: "%", label: "Project revenue growth driven through analytics engagements" },
   { value: 100, suffix: "+", label: "Business users trained across Delhi, Singapore & Malaysia" },
-  { value: 7, suffix: "", label: "Business verticals unified onto one analytics platform" },
+  { text: "Enterprise-Wide", label: "Analytics platform adopted across the enterprise" },
 ];
 
 export const programs = [
   {
     title: "Modern Enterprise Data Platform — Databricks Lakehouse",
     period: "Jan 2026 – Dec 2026",
-    scale: "₹2.5 Cr Program",
+    scale: "$260K Program",
     summary:
       "Leading enterprise migration from Azure Synapse to Databricks Lakehouse, delivered via implementation partner.",
     points: [
@@ -310,7 +311,7 @@ export const programs = [
     summary: "Orchestrated migration of 300+ Power BI reports from Analysis Services to Microsoft Fabric.",
     points: [
       "Modernized the organization's analytics platform, improving scalability and performance.",
-      "Delivered ~₹1 Crore annual cost savings through platform consolidation.",
+      "Delivered ~$105K annual cost savings through platform consolidation.",
       "Recognized with the Pidilite Spirit Award for high-impact analytics transformation.",
     ],
     tags: ["Microsoft Fabric", "Platform Migration", "Cost Optimization"],

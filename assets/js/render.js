@@ -1,8 +1,9 @@
 import {
-  heroStats, philosophy, journey, educationMilestones, strategyPhases, competencies,
+  heroStats, philosophy, journey, education, strategyPhases, competencies,
   aiGenai, governance, cloudPlatforms, outcomes, programs, speaking, speakingAvailability,
-  certifications, insights, awards, dashboardKpis,
+  featuredSpeaking, certifications, insights, awards, dashboardKpis, profile,
 } from "./data.js";
+import { openLightbox } from "./lightbox.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -72,13 +73,24 @@ function renderTimeline() {
     </div>`
     )
     .join("");
+}
 
-  const ms = $("milestonesList");
-  if (ms) {
-    ms.innerHTML = educationMilestones
-      .map((m) => `<div class="milestone"><b>${m.year}</b><span>${m.label}</span></div>`)
-      .join("");
-  }
+function renderEducation() {
+  const el = $("educationGrid");
+  if (!el) return;
+  el.innerHTML = education
+    .map(
+      (e) => `
+    <div class="card education-card">
+      <div class="edu-logo">${e.logoInitial}</div>
+      <div class="edu-body">
+        <div class="edu-year">${e.year}</div>
+        <h3>${e.degree}</h3>
+        <div class="edu-institution">${e.institution}</div>
+      </div>
+    </div>`
+    )
+    .join("");
 }
 
 function renderStrategy() {
@@ -212,7 +224,33 @@ function renderPrograms() {
   });
 }
 
+function renderFeaturedSpeaking() {
+  const el = $("featuredSpeaking");
+  if (!el) return;
+  const f = featuredSpeaking;
+  el.innerHTML = `
+    <div class="featured-speaker-logo">
+      <img src="${f.logo}" alt="${f.event} logo" loading="lazy">
+    </div>
+    <div class="featured-speaker-body">
+      <span class="badge-status badge-current">Upcoming Speaking Engagement</span>
+      <h3>${f.event}</h3>
+      <div class="featured-speaker-meta">
+        <span>${f.dates}</span>
+        <span>&middot;</span>
+        <span>${f.location}</span>
+      </div>
+      <p class="featured-speaker-topic">&ldquo;${f.topic}&rdquo;</p>
+      <p class="featured-speaker-bio">${f.bio}</p>
+      <a class="btn btn-outline btn-sm" href="${f.speakerPageUrl}" target="_blank" rel="noopener">
+        View Speaker Profile
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </a>
+    </div>`;
+}
+
 function renderSpeaking() {
+  renderFeaturedSpeaking();
   const el = $("speakingGrid");
   if (el) {
     el.innerHTML = speaking
@@ -230,7 +268,17 @@ function renderSpeaking() {
   if (avail) avail.textContent = speakingAvailability;
 }
 
-const CERT_INITIALS = ["IIMK", "DPDP", "NPTEL", "DC", "DA", "AI", "PL", "DP", "AZ", "SM", "IT"];
+const CERT_FALLBACK_INITIALS = ["IIMK", "DPDP", "NPTEL", "DC", "SM", "IT"];
+
+function certInitials(c, fallbackIndex) {
+  if (c.name.includes("IIM Kozhikode") || c.issuer.includes("IIMK")) return "IIMK";
+  if (c.name.includes("DPDP")) return "DPDP";
+  if (c.name.includes("NPTEL")) return "NPTEL";
+  if (c.name.includes("Dale Carnegie") || c.issuer.includes("Dale Carnegie")) return "DC";
+  if (c.name.includes("Scrum")) return "SM";
+  if (c.name.includes("ITIL")) return "IT";
+  return CERT_FALLBACK_INITIALS[fallbackIndex % CERT_FALLBACK_INITIALS.length];
+}
 
 function renderCertifications() {
   const el = $("certGrid");
@@ -238,15 +286,54 @@ function renderCertifications() {
   el.innerHTML = certifications
     .map(
       (c, i) => `
-    <div class="card cert-card">
-      <div class="cert-icon">${CERT_INITIALS[i % CERT_INITIALS.length]}</div>
-      <div>
+    <div class="card cert-card" data-index="${i}" tabindex="0" role="button" aria-label="View ${c.name} certificate">
+      <div class="cert-icon-wrap">
+        ${
+          c.badgeImage
+            ? `<img class="cert-badge-img" src="${c.badgeImage}" alt="${c.name} badge" loading="lazy">`
+            : `<div class="cert-icon">${certInitials(c, i)}</div>`
+        }
+      </div>
+      <div class="cert-copy">
         <div class="cert-name">${c.name}</div>
-        <div class="cert-meta">${c.issuer} &middot; ${c.year}</div>
+        <div class="cert-meta">
+          ${c.issuer} &middot; ${c.dateLabel} ${c.date}
+          ${c.level ? `<span class="cert-level">${c.level}</span>` : ""}
+        </div>
+        ${c.credlyUrl ? `<span class="cert-credly-link" data-credly-url="${c.credlyUrl}">View on Credly<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>` : ""}
       </div>
     </div>`
     )
     .join("");
+
+  el.querySelectorAll(".cert-card").forEach((card) => {
+    const c = certifications[Number(card.dataset.index)];
+    if (!c.badgeImage) return;
+
+    const open = () =>
+      openLightbox({
+        image: c.badgeImage,
+        title: c.name,
+        subtitle: `${c.issuer} &middot; ${c.dateLabel} ${c.date}`,
+        linkUrl: c.credlyUrl,
+        linkLabel: "View on Credly",
+      });
+
+    card.addEventListener("click", open);
+    card.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        open();
+      }
+    });
+  });
+
+  el.querySelectorAll(".cert-credly-link").forEach((link) => {
+    link.addEventListener("click", (e) => {
+      e.stopPropagation();
+      window.open(link.dataset.credlyUrl, "_blank", "noopener");
+    });
+  });
 }
 
 function renderInsights() {
@@ -287,6 +374,7 @@ export function renderAll() {
   renderOutcomes();
   renderPhilosophy();
   renderTimeline();
+  renderEducation();
   renderStrategy();
   renderAi();
   renderGovernance();

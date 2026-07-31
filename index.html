@@ -162,15 +162,7 @@
         <p>From enterprise application development to owning a P&amp;L and a 3-year data strategy roadmap for a Fortune-scale manufacturer.</p>
       </div>
 
-      <div class="journey-layout">
-        <div class="timeline reveal" id="timelineList"></div>
-        <aside class="reveal">
-          <div class="card" style="padding:24px;">
-            <h4 style="font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--text-faint);margin-bottom:16px;">Education &amp; Milestones</h4>
-            <div class="milestones" id="milestonesList" style="flex-direction:column;align-items:stretch;"></div>
-          </div>
-        </aside>
-      </div>
+      <div class="timeline reveal" id="timelineList"></div>
     </div>
   </section>
 
@@ -345,17 +337,30 @@
       <div class="tabbar" id="credentialsTabs" role="tablist" aria-label="Credential categories">
         <button class="tab-btn active" role="tab" aria-selected="true" data-tab="speaking">Speaking &amp; Enablement</button>
         <button class="tab-btn" role="tab" aria-selected="false" data-tab="certifications">Certifications</button>
+        <button class="tab-btn" role="tab" aria-selected="false" data-tab="education">Education</button>
         <button class="tab-btn" role="tab" aria-selected="false" data-tab="insights">Publications / Insights</button>
         <button class="tab-btn" role="tab" aria-selected="false" data-tab="awards">Awards &amp; Recognition</button>
       </div>
 
       <div class="tab-panel active" data-panel="speaking">
-        <div class="program-grid" id="speakingGrid" style="grid-template-columns:repeat(3,1fr);"></div>
+        <div class="card featured-speaker" id="featuredSpeaking"></div>
+        <div class="program-grid" id="speakingGrid" style="grid-template-columns:repeat(3,1fr);margin-top:24px;"></div>
         <p style="margin-top:24px;color:var(--text-muted);font-size:14.5px;" id="speakingAvailability"></p>
       </div>
 
       <div class="tab-panel" data-panel="certifications">
+        <div class="cert-panel-head">
+          <p>Click any certification to view the badge up close.</p>
+          <a class="btn btn-ghost btn-sm" href="https://www.credly.com/users/balachandra-srinevasalu.ada06a05" target="_blank" rel="noopener">
+            View full badge wallet on Credly
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
         <div class="cert-grid" id="certGrid"></div>
+      </div>
+
+      <div class="tab-panel" data-panel="education">
+        <div class="education-grid" id="educationGrid"></div>
       </div>
 
       <div class="tab-panel" data-panel="insights">

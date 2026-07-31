@@ -11,7 +11,7 @@ A premium, executive-level portfolio site positioning Balachandra as a **Directo
 | Interactivity | Vanilla ES modules (`assets/js/*.js`) | No React/bundler needed; loads instantly, easy for a non-developer to hand-edit later. |
 | Charts | Chart.js (CDN) | The one external dependency — used only for the BI Modernization dashboard demo. Loads lazily (only when that tab is opened). |
 | Fonts | Google Fonts (Fraunces + Inter, CDN) | Serif headings read as executive/editorial; Inter keeps body copy crisp and readable. |
-| Hosting | GitHub Pages, served from your existing `cv` repo | Free, fast, no new repo to manage — live at `https://chandrra111.github.io/cv/`. |
+| Hosting | GitHub Pages, served from your existing `cv` repo | Free, fast, no new repo to manage — live at `https://balachandra-srinevasalu.com/` (custom domain, DNS via GoDaddy). |
 
 If you later want to evolve this into a Next.js/React/TypeScript/Framer Motion codebase (e.g., to add a CMS-backed blog or server-rendered contact form), the content model in `assets/js/data.js` is already shaped like the props/content you'd pass into React components — porting it later is straightforward.
 
@@ -67,24 +67,18 @@ The contact form currently shows a friendly "not connected yet" message instead 
 
 ## Deploying to GitHub Pages
 
-This site is set up to publish from your existing **`github.com/chandrra111/cv`** repo (it was empty, so there's nothing to preserve or merge). The local folder is already a git repo, committed, with `origin` pointed at that repo. All that's left is to push:
+This site publishes from **`github.com/chandrra111/cv`** on the `main` branch, root folder — already pushed and live. Pages settings: **Settings → Pages** → Source: **Deploy from a branch** → Branch: **main**, folder **/(root)**.
 
-```bash
-# from inside the portfolio/ folder
-git push -u origin main
-```
+### Custom domain
 
-You'll be prompted to authenticate — either sign in via the browser popup, or use a [GitHub personal access token](https://github.com/settings/tokens) as the password if prompted for one.
+The site is served at **`https://balachandra-srinevasalu.com/`** (not the default `chandrra111.github.io/cv/` path — GitHub auto-redirects the old URL to this one). This is configured two ways, both already done:
 
-**Then, one-time only:** on GitHub, go to `github.com/chandrra111/cv` → **Settings → Pages** → under "Build and deployment", set **Source: Deploy from a branch**, **Branch: `main`**, folder **`/ (root)`** → **Save**.
+1. **GitHub → Settings → Pages → Custom domain**: set to `balachandra-srinevasalu.com`. This is what generates the `CNAME` file at the repo root (already committed) — GitHub Pages reads that file on every deploy to know which domain to serve. **Don't delete `CNAME`**, or the custom domain breaks on the next push.
+2. **DNS at GoDaddy** (`balachandra-srinevasalu.com` → DNS Records):
+   - Four `A` records on `@` pointing to GitHub Pages' IPs: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+   - One `CNAME` record: `www` → `chandrra111.github.io`
 
-Within a minute or two, your site will be live at:
-
-```
-https://chandrra111.github.io/cv/
-```
-
-All URLs in this project (canonical link, Open Graph tags, JSON-LD, sitemap.xml, robots.txt) are already set to that address. If you ever rename the repo or move the site elsewhere, search-and-replace `chandrra111.github.io/cv` across `index.html`, `sitemap.xml`, and `robots.txt`.
+All URLs in this project (canonical link, Open Graph tags, JSON-LD, sitemap.xml, robots.txt) are set to `https://balachandra-srinevasalu.com/`. If you ever change domains or repos again, search-and-replace that string across `index.html`, `sitemap.xml`, `robots.txt`, and update/remove `CNAME`.
 
 ### Making future edits
 

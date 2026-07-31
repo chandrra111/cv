@@ -8,11 +8,6 @@
   to { transform: rotate(360deg); }
 }
 
-@keyframes pulse-ring {
-  0% { transform: scale(0.8); opacity: 0.8; }
-  100% { transform: scale(1.8); opacity: 0; }
-}
-
 @keyframes floatY {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }

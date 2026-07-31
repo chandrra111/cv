@@ -140,6 +140,7 @@ export const education = [
     degree: "Professional Certificate, Data Science & Artificial Intelligence",
     institution: "Indian Institute of Management, Kozhikode",
     shortName: "IIM Kozhikode",
+    logo: "assets/img/education/iimk.png",
     logoInitial: "IIMK",
   },
   {
@@ -147,6 +148,7 @@ export const education = [
     degree: "Master of Computer Application (MCA)",
     institution: "Indira Gandhi National Open University",
     shortName: "IGNOU",
+    logo: "assets/img/education/ignou.png",
     logoInitial: "IGNOU",
   },
   {
@@ -154,6 +156,7 @@ export const education = [
     degree: "Bachelor of Science, Computer Science",
     institution: "Sri Krishnadevaraya University",
     shortName: "Sri Krishnadevaraya University",
+    logo: "assets/img/education/sku.png",
     logoInitial: "SKU",
   },
 ];
@@ -398,17 +401,15 @@ export const programs = [
   },
 ];
 
-export const featuredSpeaking = {
-  event: "Data Engineering Summit 2026 (DES 2026)",
-  dates: "May 14–15, 2026",
-  location: "Hotel Radisson Blu, ORR, Bangalore, India",
-  topic: "Data Quality in the Age of AI: Garbage In, Disaster Out.",
-  bio: "Head of Technical Delivery — Data & Analytics (Centre of Excellence), Pidilite Industries",
-  logo: "https://des.analyticsindiamag.com/wp-content/uploads/2022/12/DES26_Dark.png",
-  speakerPageUrl: "https://des.analyticsindiamag.com/speaker/",
-};
-
 export const speaking = [
+  {
+    title: "Speaker — Data Engineering Summit 2026 (DES 2026)",
+    period: "May 2026",
+    body:
+      "Spoke at DES 2026, Hotel Radisson Blu ORR, Bangalore, on “Data Quality in the Age of AI: Garbage In, Disaster Out.”",
+    linkUrl: "https://des.analyticsindiamag.com/speaker/",
+    linkLabel: "View speaker profile",
+  },
   {
     title: "Global Power BI Enablement Facilitator",
     period: "2019",

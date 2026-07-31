@@ -1,7 +1,7 @@
 import {
   heroStats, philosophy, journey, education, strategyPhases, competencies,
   aiGenai, governance, cloudPlatforms, outcomes, programs, speaking, speakingAvailability,
-  featuredSpeaking, certifications, insights, awards, dashboardKpis, profile,
+  certifications, insights, awards, dashboardKpis,
 } from "./data.js";
 import { openLightbox } from "./lightbox.js";
 
@@ -82,7 +82,13 @@ function renderEducation() {
     .map(
       (e) => `
     <div class="card education-card">
-      <div class="edu-logo">${e.logoInitial}</div>
+      <div class="edu-logo-wrap">
+        ${
+          e.logo
+            ? `<img class="edu-logo-img" src="${e.logo}" alt="${e.shortName} logo" loading="lazy">`
+            : `<div class="edu-logo">${e.logoInitial}</div>`
+        }
+      </div>
       <div class="edu-body">
         <div class="edu-year">${e.year}</div>
         <h3>${e.degree}</h3>
@@ -224,33 +230,7 @@ function renderPrograms() {
   });
 }
 
-function renderFeaturedSpeaking() {
-  const el = $("featuredSpeaking");
-  if (!el) return;
-  const f = featuredSpeaking;
-  el.innerHTML = `
-    <div class="featured-speaker-logo">
-      <img src="${f.logo}" alt="${f.event} logo" loading="lazy">
-    </div>
-    <div class="featured-speaker-body">
-      <span class="badge-status badge-current">Upcoming Speaking Engagement</span>
-      <h3>${f.event}</h3>
-      <div class="featured-speaker-meta">
-        <span>${f.dates}</span>
-        <span>&middot;</span>
-        <span>${f.location}</span>
-      </div>
-      <p class="featured-speaker-topic">&ldquo;${f.topic}&rdquo;</p>
-      <p class="featured-speaker-bio">${f.bio}</p>
-      <a class="btn btn-outline btn-sm" href="${f.speakerPageUrl}" target="_blank" rel="noopener">
-        View Speaker Profile
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-      </a>
-    </div>`;
-}
-
 function renderSpeaking() {
-  renderFeaturedSpeaking();
   const el = $("speakingGrid");
   if (el) {
     el.innerHTML = speaking
@@ -260,6 +240,7 @@ function renderSpeaking() {
         <div class="period">${s.period}</div>
         <h3>${s.title}</h3>
         <p>${s.body}</p>
+        ${s.linkUrl ? `<a class="list-card-link" href="${s.linkUrl}" target="_blank" rel="noopener">${s.linkLabel || "Learn more"}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></a>` : ""}
       </div>`
       )
       .join("");

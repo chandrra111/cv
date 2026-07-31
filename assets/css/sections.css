@@ -192,13 +192,6 @@
 }
 .ai-col-head h4 { font-size: 1.05rem; }
 
-/* --- Journey layout --- */
-.journey-layout {
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 48px;
-}
-
 /* --- Reveal-on-scroll targets --- */
 .reveal {
   opacity: 0;

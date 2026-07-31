@@ -8,9 +8,10 @@
   .outcomes-grid { grid-template-columns: repeat(2, 1fr); }
   .program-grid { grid-template-columns: 1fr; }
   .award-grid { grid-template-columns: repeat(1, 1fr); }
-  .journey-layout { grid-template-columns: 1fr; }
-  .journey-layout aside { order: -1; }
-  .milestones { display: flex; }
+  .education-grid { grid-template-columns: repeat(1, 1fr); }
+  .featured-speaker { grid-template-columns: 1fr; text-align: center; }
+  .featured-speaker-logo { max-width: 200px; margin-inline: auto; }
+  .featured-speaker-meta { justify-content: center; }
 }
 
 @media (max-width: 920px) {

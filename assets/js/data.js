@@ -15,6 +15,7 @@ export const profile = {
   phone: "+91-9740966006",
   linkedin: "https://www.linkedin.com/in/chandrra/",
   github: "https://github.com/chandrra111",
+  credly: "https://www.credly.com/users/balachandra-srinevasalu.ada06a05",
   resumeFile: "assets/resume/Balachandra_Srinevasalu_Resume.pdf",
 };
 
@@ -133,10 +134,28 @@ export const journey = [
   },
 ];
 
-export const educationMilestones = [
-  { year: "2024", label: "Professional Certificate, Data Science & AI — IIM Kozhikode" },
-  { year: "2010", label: "Master of Computer Application (MCA) — IGNOU" },
-  { year: "2002", label: "B.Sc. Computer Science — Sri Krishnadevaraya University" },
+export const education = [
+  {
+    year: "2024",
+    degree: "Professional Certificate, Data Science & Artificial Intelligence",
+    institution: "Indian Institute of Management, Kozhikode",
+    shortName: "IIM Kozhikode",
+    logoInitial: "IIMK",
+  },
+  {
+    year: "2010",
+    degree: "Master of Computer Application (MCA)",
+    institution: "Indira Gandhi National Open University",
+    shortName: "IGNOU",
+    logoInitial: "IGNOU",
+  },
+  {
+    year: "2002",
+    degree: "Bachelor of Science, Computer Science",
+    institution: "Sri Krishnadevaraya University",
+    shortName: "Sri Krishnadevaraya University",
+    logoInitial: "SKU",
+  },
 ];
 
 export const strategyPhases = [
@@ -379,6 +398,16 @@ export const programs = [
   },
 ];
 
+export const featuredSpeaking = {
+  event: "Data Engineering Summit 2026 (DES 2026)",
+  dates: "May 14–15, 2026",
+  location: "Hotel Radisson Blu, ORR, Bangalore, India",
+  topic: "Data Quality in the Age of AI: Garbage In, Disaster Out.",
+  bio: "Head of Technical Delivery — Data & Analytics (Centre of Excellence), Pidilite Industries",
+  logo: "https://des.analyticsindiamag.com/wp-content/uploads/2022/12/DES26_Dark.png",
+  speakerPageUrl: "https://des.analyticsindiamag.com/speaker/",
+};
+
 export const speaking = [
   {
     title: "Global Power BI Enablement Facilitator",
@@ -401,18 +430,86 @@ export const speaking = [
 export const speakingAvailability =
   "Open to panel discussions, industry roundtables, and speaking engagements on enterprise data strategy, BI modernization, and AI-ready governance.";
 
+// Microsoft/Credly entries are sourced directly from the Credly badge wallet
+// (profile.credly) — name, dates, and badge images all mirror what's shown there.
 export const certifications = [
-  { name: "Professional Certificate in Data Science & Artificial Intelligence", issuer: "IIM Kozhikode (IIMK)", year: "2024" },
-  { name: "Digital Personal Data Protection Act (DPDP), 2023 — Certificate Course & Examination", issuer: "DPDPA.com", year: "2026" },
-  { name: "Leadership and Talent Management — NPTEL+ Workshop", issuer: "IIT Roorkee (Dept. of Management Studies)", year: "2026" },
-  { name: "Step Up To Leadership", issuer: "Dale Carnegie & Associates, Inc.", year: "2024" },
-  { name: "Microsoft Certified: Data Analyst Associate — DA-100", issuer: "Microsoft", year: "2021" },
-  { name: "Microsoft Certified: Azure AI Fundamentals — AI-900", issuer: "Microsoft", year: "2021" },
-  { name: "Microsoft Certified: Power Platform Fundamentals — PL-900", issuer: "Microsoft", year: "2021" },
-  { name: "Microsoft Certified: Azure Data Fundamentals — DP-900", issuer: "Microsoft", year: "2021" },
-  { name: "Microsoft Certified: Azure Fundamentals — AZ-900", issuer: "Microsoft", year: "2021" },
-  { name: "Scrum Master Certified (SMC®)", issuer: "SCRUMstudy", year: "2014" },
-  { name: "ITIL Version 3 Foundation", issuer: "EXIN", year: "2008" },
+  { name: "Professional Certificate in Data Science & Artificial Intelligence", issuer: "IIM Kozhikode (IIMK)", dateLabel: "Issued", date: "2024" },
+  { name: "Digital Personal Data Protection Act (DPDP), 2023 — Certificate Course & Examination", issuer: "DPDPA.com", dateLabel: "Issued", date: "2026" },
+  { name: "Leadership and Talent Management — NPTEL+ Workshop", issuer: "IIT Roorkee (Dept. of Management Studies)", dateLabel: "Issued", date: "2026" },
+  { name: "Step Up To Leadership", issuer: "Dale Carnegie & Associates, Inc.", dateLabel: "Issued", date: "2024" },
+  {
+    name: "Microsoft Certified: Azure Data Engineer Associate",
+    issuer: "Microsoft",
+    level: "Associate",
+    dateLabel: "Expired",
+    date: "Jun 30, 2024",
+    credlyUrl: "https://www.credly.com/badges/53e79224-e9f5-478d-a734-4fbf866f6307",
+    badgeImage: "https://images.credly.com/images/61542181-0e8d-496c-a17c-3d4bf590eda1/azure-data-engineer-associate-600x600.png",
+  },
+  {
+    name: "Microsoft Certified: Azure Data Scientist Associate",
+    issuer: "Microsoft",
+    level: "Associate",
+    dateLabel: "Expired",
+    date: "May 5, 2024",
+    credlyUrl: "https://www.credly.com/badges/7178e0a5-b253-4341-9f37-0776346c2818",
+    badgeImage: "https://images.credly.com/images/5c8fca38-b0d2-49e5-9ad2-f3f8e79b327f/azure-data-scientist-associate-600x600.png",
+  },
+  {
+    name: "Microsoft Certified: Power BI Data Analyst Associate",
+    issuer: "Microsoft",
+    level: "Associate",
+    dateLabel: "Expired",
+    date: "Aug 6, 2023",
+    credlyUrl: "https://www.credly.com/badges/d6a02cf8-e556-4374-805c-51551b035a96",
+    badgeImage: "https://images.credly.com/images/619f60f8-4f63-4772-910e-dc31c6f2f7e8/image.png",
+  },
+  {
+    name: "Microsoft Certified: Azure Data Fundamentals",
+    issuer: "Microsoft",
+    level: "Fundamentals",
+    dateLabel: "Issued",
+    date: "Nov 29, 2021",
+    credlyUrl: "https://www.credly.com/badges/839df77c-a67d-4f05-a8f3-9a087cf844b8",
+    badgeImage: "https://images.credly.com/images/70eb1e3f-d4de-4377-a062-b20fb29594ea/azure-data-fundamentals-600x600.png",
+  },
+  {
+    name: "Microsoft Certified: Azure AI Fundamentals",
+    issuer: "Microsoft",
+    level: "Fundamentals",
+    dateLabel: "Issued",
+    date: "Jun 24, 2021",
+    credlyUrl: "https://www.credly.com/badges/11c132ca-a540-4320-9644-39718a1f49d3",
+    badgeImage: "https://images.credly.com/images/4136ced8-75d5-4afb-8677-40b6236e2672/azure-ai-fundamentals-600x600.png",
+  },
+  {
+    name: "Microsoft Certified: Power Platform Fundamentals",
+    issuer: "Microsoft",
+    level: "Fundamentals",
+    dateLabel: "Issued",
+    date: "Apr 22, 2021",
+    credlyUrl: "https://www.credly.com/badges/fc590961-0d4a-4677-92d5-945209e6e0da",
+    badgeImage: "https://images.credly.com/images/2a6251f2-737b-4bf6-9190-d77570cc76fc/CERT-Fundamentals-Power-Platform.png",
+  },
+  {
+    name: "Microsoft Certified: Azure Fundamentals",
+    issuer: "Microsoft",
+    level: "Fundamentals",
+    dateLabel: "Issued",
+    date: "Feb 22, 2021",
+    credlyUrl: "https://www.credly.com/badges/beb6d28f-179a-40fc-bed7-de456965b0c1",
+    badgeImage: "https://images.credly.com/images/be8fcaeb-c769-4858-b567-ffaaa73ce8cf/image.png",
+  },
+  {
+    name: "Exam 778: Analyzing and Visualizing Data with Power BI",
+    issuer: "Microsoft",
+    dateLabel: "Issued",
+    date: "Feb 20, 2020",
+    credlyUrl: "https://www.credly.com/badges/6c8171e3-ab82-4f0e-9341-dbb87b7c5465",
+    badgeImage: "https://images.credly.com/images/4af98afb-e325-490a-a4dd-305f7cbdb9ee/Exam-778-UPDATED.png",
+  },
+  { name: "Scrum Master Certified (SMC®)", issuer: "SCRUMstudy", dateLabel: "Issued", date: "2014" },
+  { name: "ITIL Version 3 Foundation", issuer: "EXIN", dateLabel: "Issued", date: "2008" },
 ];
 
 export const insights = {

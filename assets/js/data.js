@@ -77,6 +77,7 @@ export const journey = [
       "Player-coach leadership style: pairs enterprise-level strategic ownership with deep platform fluency, setting the technical bar for the organisation while operating at the executive level.",
     ],
     tags: ["Enterprise Data Strategy", "Digital Transformation", "Data Governance", "Stakeholder Management", "P&L Ownership", "Team Leadership"],
+    logo: "assets/img/companies/pidilite.png",
     logoInitial: "P",
   },
   {
@@ -91,6 +92,7 @@ export const journey = [
       "Eliminated manual Excel reporting, saving 100+ FTE hours/month; recognised with multiple CFO & Rock Star Awards (2019–2021).",
     ],
     tags: ["Finance Analytics", "NLP POCs", "Power BI", "Global Stakeholders"],
+    logo: "assets/img/companies/hp.png",
     logoInitial: "H",
   },
   {
@@ -104,6 +106,7 @@ export const journey = [
       "Delivered US onshore engagements — Sales Channel Effectiveness and Fulfilment Centre Operational Analysis.",
     ],
     tags: ["SaaS Analytics", "Vertica", "Multi-Tenant Architecture", "Scrum"],
+    logo: "assets/img/companies/manthan.jpg",
     logoInitial: "M",
   },
   {
@@ -117,6 +120,7 @@ export const journey = [
       "Managed global delivery teams and led RFI/RFP responses; earned Bronze & Silver VP Awards.",
     ],
     tags: ["Predictive Analytics", "Pre-Sales", "Global Delivery"],
+    logo: "assets/img/companies/genpact.png",
     logoInitial: "G",
   },
   {

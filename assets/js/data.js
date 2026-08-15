@@ -239,15 +239,15 @@ export const aiGenai = {
 export const governance = [
   {
     title: "Standards & Stewardship",
-    body: "Standardized tools, data models, and delivery frameworks across the Analytics CoE; championed data stewardship across every business vertical.",
+    body: "Standardized tools, data models, delivery frameworks, and data contracts across the Analytics CoE; championed data stewardship across every business vertical.",
   },
   {
     title: "Quality & Controls",
     body: "Drove data quality, consistency, and control improvements, ensuring trusted reporting for executive decision-making.",
   },
   {
-    title: "Lineage & Cataloguing",
-    body: "Implementing Unity Catalog for lineage, access control, and discovery; hands-on with Erwin and SQLDBM for data modelling and metadata management.",
+    title: "Lineage, Cataloguing & Observability",
+    body: "Implementing Unity Catalog for lineage, access control, discovery, and data observability; hands-on with Erwin and SQLDBM for data modelling and metadata management.",
   },
   {
     title: "Trusted Decisions",

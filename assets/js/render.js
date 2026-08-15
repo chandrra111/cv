@@ -62,7 +62,9 @@ function renderTimeline() {
     .map(
       (j) => `
     <div class="timeline-item">
-      <div class="timeline-dot">${j.logoInitial}</div>
+      <div class="timeline-dot ${j.logo ? "has-logo" : ""}">${
+        j.logo ? `<img src="${j.logo}" alt="${j.company} logo">` : j.logoInitial
+      }</div>
       <div class="timeline-year">${j.year}</div>
       <div class="timeline-role">
         <h3>${j.role}</h3>

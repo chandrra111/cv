@@ -272,6 +272,20 @@
   font-weight: 800;
   color: var(--accent);
 }
+.timeline-dot.has-logo {
+  left: -47.5px;
+  top: -2px;
+  width: 32px; height: 32px;
+  background: #fff;
+  border-color: var(--border);
+  padding: 5px;
+  overflow: hidden;
+}
+.timeline-dot.has-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .timeline-year {
   font-size: 12.5px;
   font-weight: 700;

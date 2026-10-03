@@ -6,8 +6,8 @@
 
 export const profile = {
   name: "Balachandra Srinevasalu",
-  title: "Director, Data & Analytics",
-  tagline: "Enterprise Data Strategy · BI & Data Warehousing · AI/GenAI Transformation",
+  title: "Data & Analytics Leader | Enterprise Data Architecture",
+  tagline: "Enterprise Data Architecture · Data Strategy · Lakehouse & BI Platforms · AI-Ready Governance",
   location: "Bengaluru, India",
   summary:
     "23 years turning enterprise data into a strategic asset for the C-suite — building the BI Centres of Excellence, cloud/Lakehouse platforms, and governance foundations that let global finance, sales, and operations leaders run their business on trusted data.",
@@ -21,7 +21,7 @@ export const profile = {
 
 export const heroStats = [
   { value: 23, suffix: "+", label: "Years, Enterprise Data & Analytics" },
-  { value: 0.42, prefix: "$", suffix: "M", decimals: 2, label: "Annual P&L Owned" },
+  { value: 50, suffix: "+", label: "Global Finance Analytics Solutions Architected" },
   { value: 20, suffix: "+", label: "Team Led — Engineers, Analysts, Managers & Partners" },
   { text: "Enterprise-Wide", label: "Data & Analytics Coverage" },
   { value: 300, suffix: "+", label: "BI Reports Modernized" },
@@ -35,7 +35,7 @@ export const philosophy = {
     {
       title: "Strategic Visionary & Transformation Agent",
       body: "I look past the next dashboard request to the capability the business will need in three years — then build the roadmap, budget, and platform to get there.",
-      evidence: "Owns Pidilite's 3-year enterprise data strategy; leading the ~$260K Databricks Lakehouse migration.",
+      evidence: "Owns Pidilite's 3-year enterprise data strategy; leading the Databricks Lakehouse migration.",
     },
     {
       title: "C-Suite Partnership & Executive Influence",
@@ -50,7 +50,7 @@ export const philosophy = {
     {
       title: "High Ownership & Accountability",
       body: "I own the outcome end-to-end — budget, vendors, platform, and results — not just the delivery milestone.",
-      evidence: "Owns ~$0.42M annual P&L across vendor/contract staff and cloud infrastructure; manages Microsoft & Databricks OEM relationships directly.",
+      evidence: "Owns the vendor, contract staff and cloud infrastructure budget; manages Microsoft & Databricks OEM relationships directly.",
     },
     {
       title: "Player-Coach Leadership",
@@ -73,7 +73,7 @@ export const journey = [
       "Data governance & quality: established enterprise-wide governance standards, quality controls, and stewardship practices that ensure trusted, compliant data underpins every executive decision.",
       "Stakeholder management & executive influence: the primary data & analytics partner to the C-suite, translating enterprise priorities into technology investment decisions and building organisation-wide trust in data as a strategic asset.",
       "Organisational capability building: built and leads a high-performing 20+ member Data & Analytics team — data engineers, business analysts, BI engineers, and AI engineers — plus external vendor and partner resources, with a focus on talent development and succession planning.",
-      "Business value realization: ~$105K+ in annual platform savings, ~75% faster enterprise reporting performance, and ~$0.42M in P&L under direct ownership — technology investment translated into measurable business outcomes.",
+      "Business value realization: ~$105K+ in annual platform savings, ~75% faster enterprise reporting performance, with the vendor and cloud budget under direct ownership — technology investment translated into measurable business outcomes.",
       "Player-coach leadership style: pairs enterprise-level strategic ownership with deep platform fluency, setting the technical bar for the organisation while operating at the executive level.",
     ],
     tags: ["Enterprise Data Strategy", "Digital Transformation", "Data Governance", "Stakeholder Management", "P&L Ownership", "Team Leadership"],
@@ -312,7 +312,7 @@ export const dashboardKpis = [
 export const dashboardCharts = {
   loadTime: {
     labels: ["Before Optimization", "After Optimization"],
-    values: [18.4, 4.6],
+    values: [100, 25],
   },
   savings: {
     labels: ["Fabric Platform Consolidation", "Manual Reporting Eliminated (FTE hrs)", "Semantic Model Efficiency"],
@@ -335,7 +335,7 @@ export const programs = [
   {
     title: "Modern Enterprise Data Platform — Databricks Lakehouse",
     period: "Jan 2026 – Dec 2026",
-    scale: "$260K Program",
+    scale: "Enterprise Lakehouse Program",
     summary:
       "Leading enterprise migration from Azure Synapse to Databricks Lakehouse, delivered via implementation partner.",
     points: [

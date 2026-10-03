@@ -16,7 +16,6 @@ export const profile = {
   linkedin: "https://www.linkedin.com/in/chandrra/",
   github: "https://github.com/chandrra111",
   credly: "https://www.credly.com/users/balachandra-srinevasalu.ada06a05",
-  resumeFile: "assets/resume/Balachandra_Srinevasalu_Resume.pdf",
 };
 
 export const heroStats = [

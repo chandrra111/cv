@@ -40,8 +40,7 @@ portfolio/
 │   │   ├── charts.js           # BI dashboard charts (lazy-loaded)
 │   │   ├── contact.js          # Contact form submit handling
 │   │   └── main.js             # Entry point — wires everything together
-│   ├── img/                    # profile.png, favicon.svg
-│   └── resume/                 # Downloadable resume PDF
+│   └── img/                    # profile photo, favicon, logos
 └── README.md
 ```
 
@@ -51,10 +50,10 @@ portfolio/
 
 To change static/structural copy (hero headline, section intros, the flagship Databricks callout), edit the relevant block directly in `index.html`.
 
-## Swapping the photo or résumé
+## Swapping the photo
 
-- Replace `assets/img/profile.png` with a higher-resolution headshot if you have one — the current photo was extracted from your resume PDF at 640×638px, which is fine for the current display size but will look soft if you ever enlarge the hero photo further. Keep it roughly square; the CSS crops it to a circle automatically.
-- Replace `assets/resume/Balachandra_Srinevasalu_Resume.pdf` with an updated résumé any time — the "Download Résumé" button always points to this exact filename.
+- Replace `assets/img/profile.jpg` with a different headshot if you like. Keep it roughly square; the CSS crops it to a circle automatically.
+- There is intentionally no résumé download on the site (the button and PDF were removed).
 
 ## Contact form setup (required before going live)
 
@@ -102,7 +101,6 @@ GitHub Pages redeploys automatically within a minute of each push.
 
 ## Ideas to push this further
 
-- A downloadable **one-page "board brief"** version of your resume (distinct from the full CV) for time-constrained executive recruiters.
 - A **case-study PDF** for the Databricks Lakehouse migration once it's delivered in 2026 — turns your biggest program into a leave-behind document.
 - Short **video introduction** (60–90 seconds) embedded in the hero — recruiters increasingly expect this at Director+ level.
 - **Google Analytics or Plausible** to see which sections recruiters actually spend time on.

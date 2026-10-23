@@ -1,8 +1,9 @@
 /* ===== Data & AI hub (sits above the portfolio) ===== */
 
-.pane { padding-top: var(--nav-h); }
+.pane { padding-top: 0; }
+.pane[data-pane="profile"] { padding-top: var(--nav-h); }
 .pane[hidden] { display: none; }
-.hub { padding-top: 56px; }
+.hub { padding-top: 0; }
 
 .hub-lede { max-width: 70ch; }
 
@@ -286,7 +287,6 @@
   .bar-row { grid-template-columns: 1fr 40px; }
   .bar-row .bar-track { grid-column: 1 / -1; order: 3; }
   .issue { grid-template-columns: 1fr; gap: 8px; }
-  .hub { padding-top: 36px; }
 }
 
 html { scroll-padding-top: calc(var(--nav-h) + 12px); }

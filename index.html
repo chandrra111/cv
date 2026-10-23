@@ -26,7 +26,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/css/variables.css">
 <link rel="stylesheet" href="assets/css/base.css">
@@ -35,6 +35,7 @@
 <link rel="stylesheet" href="assets/css/animations.css">
 <link rel="stylesheet" href="assets/css/responsive.css">
 <link rel="stylesheet" href="assets/css/hub.css">
+<link rel="stylesheet" href="assets/css/hub-v2.css">
 
 <script type="application/ld+json">
 {
@@ -95,15 +96,24 @@
 <main id="main">
 
   <div class="pane" id="pane-ai" data-pane="ai">
-    <section class="hub hub-ai" id="ai">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">AI · Tools Index</p>
-          <h2>AI Tools Explorer</h2>
-          <p class="hub-lede">A searchable index of AI tools I've seen in daily roundups &mdash; filter by category, search by what you need, and open an insights drawer for similar tools and key themes.</p>
+        <section class="hub hub-ai" id="ai">
+      <header class="hub-hero hero-ai">
+        <div class="hh-bg" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i><i class="grid"></i></div>
+        <div class="container hh-inner">
+          <span class="hh-kicker"><i></i>AI · Tools Index</span>
+          <h1 class="hh-title">Find the right <span class="grad">AI tool</span><br>in seconds</h1>
+          <p class="hh-sub">A living index of hundreds of AI tools &mdash; search by what you need, browse by category, and get quick insights on similar options. Curated and summarised, never copied.</p>
+          <div class="hh-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="aiSearch" placeholder="Search tools or needs: video, SQL, meeting notes&hellip;" aria-label="Search AI tools" autocomplete="off">
+          </div>
+          <div class="hh-pop" aria-label="Popular searches"><span>Popular:</span><button type="button" data-hero-q="video" data-hero-p="ai">video</button><button type="button" data-hero-q="SQL" data-hero-p="ai">SQL</button><button type="button" data-hero-q="meeting notes" data-hero-p="ai">meeting notes</button><button type="button" data-hero-q="agent" data-hero-p="ai">agent</button><button type="button" data-hero-q="resume" data-hero-p="ai">resume</button><button type="button" data-hero-q="design" data-hero-p="ai">design</button></div>
+          <div class="stat-strip" id="aiStats" aria-label="At a glance"></div>
         </div>
+        <div class="hh-marquee" aria-hidden="true"><div class="track" id="aiMarquee"></div></div>
+      </header>
+      <div class="container hub-body">
 
-        <div class="stat-strip" id="aiStats" aria-label="AI tools index at a glance"></div>
 
         <div class="tabbar" id="aiTabs" role="tablist" aria-label="AI tools views">
           <button class="tab-btn active" role="tab" aria-selected="true" data-tab="explore">Explore tools</button>
@@ -112,11 +122,8 @@
         </div>
 
         <div class="tab-panel active" data-panel="explore">
+          <div class="spot-wrap" id="aiFeat" hidden></div>
           <div class="hub-toolbar">
-            <div class="search-field">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="search" id="aiSearch" placeholder="Search tools or needs, e.g. video, SQL, meeting notes&hellip;" aria-label="Search AI tools" autocomplete="off">
-            </div>
             <select class="hub-select" id="aiSort" aria-label="Sort tools">
               <option value="az">Sort: A&ndash;Z</option>
               <option value="featured">Sort: Recently featured first</option>
@@ -153,15 +160,24 @@
   </div>
 
   <div class="pane" id="pane-data" data-pane="data" hidden>
-    <section class="hub hub-data" id="data">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Data · Databricks Watch</p>
-          <h2>What's New on Databricks</h2>
-          <p class="hub-lede">A searchable digest of recent Databricks platform releases &mdash; summarised in my own words, grouped by theme, with a link to the official release notes for every item.</p>
+        <section class="hub hub-data" id="data">
+      <header class="hub-hero hero-data">
+        <div class="hh-bg" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i><i class="grid"></i></div>
+        <div class="container hh-inner">
+          <span class="hh-kicker"><i></i>Data · Databricks Watch</span>
+          <h1 class="hh-title">Every <span class="grad">Databricks</span> release,<br>decoded</h1>
+          <p class="hh-sub">The platform moves fast. This digest groups the latest releases by theme, explains each in plain language, and links straight to the official release notes.</p>
+          <div class="hh-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="dbxSearch" placeholder="Search updates: Genie, Unity Catalog, lineage&hellip;" aria-label="Search Databricks updates" autocomplete="off">
+          </div>
+          <div class="hh-pop" aria-label="Popular searches"><span>Popular:</span><button type="button" data-hero-q="Genie" data-hero-p="dbx">Genie</button><button type="button" data-hero-q="Unity Catalog" data-hero-p="dbx">Unity Catalog</button><button type="button" data-hero-q="lineage" data-hero-p="dbx">lineage</button><button type="button" data-hero-q="serverless" data-hero-p="dbx">serverless</button><button type="button" data-hero-q="MCP" data-hero-p="dbx">MCP</button><button type="button" data-hero-q="Delta" data-hero-p="dbx">Delta</button></div>
+          <div class="stat-strip" id="dbxStats" aria-label="At a glance"></div>
         </div>
+        <div class="hh-marquee" aria-hidden="true"><div class="track" id="dbxMarquee"></div></div>
+      </header>
+      <div class="container hub-body">
 
-        <div class="stat-strip" id="dbxStats" aria-label="Databricks digest at a glance"></div>
 
         <div class="tabbar" id="dataTabs" role="tablist" aria-label="Databricks digest views">
           <button class="tab-btn active" role="tab" aria-selected="true" data-tab="dbx-updates">New features &amp; updates</button>
@@ -171,11 +187,8 @@
         </div>
 
         <div class="tab-panel active" data-panel="dbx-updates">
+          <div class="spot-wrap" id="dbxSpot" hidden></div>
           <div class="hub-toolbar">
-            <div class="search-field">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="search" id="dbxSearch" placeholder="Search updates, e.g. Genie, Unity Catalog, lineage&hellip;" aria-label="Search Databricks updates" autocomplete="off">
-            </div>
             <select class="hub-select" id="dbxStatus" aria-label="Filter by status"></select>
           </div>
           <div class="chip-bar" id="dbxThemeChips" role="group" aria-label="Filter by theme"></div>
@@ -208,15 +221,24 @@
   </div>
 
   <div class="pane" id="pane-bi" data-pane="bi" hidden>
-    <section class="hub hub-bi" id="bi">
-      <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">BI · Power BI &amp; Fabric Watch</p>
-          <h2>What's New in Power BI &amp; Fabric</h2>
-          <p class="hub-lede">A searchable digest of recent Power BI and Microsoft Fabric features &mdash; reporting, semantic models and DAX, Copilot and agents, governance &mdash; summarised in my own words with a link to the official Microsoft documentation.</p>
+        <section class="hub hub-bi" id="bi">
+      <header class="hub-hero hero-bi">
+        <div class="hh-bg" aria-hidden="true"><i class="orb o1"></i><i class="orb o2"></i><i class="orb o3"></i><i class="grid"></i></div>
+        <div class="container hh-inner">
+          <span class="hh-kicker"><i></i>BI · Power BI &amp; Fabric Watch</span>
+          <h1 class="hh-title">Power BI &amp; Fabric,<br><span class="grad">without the noise</span></h1>
+          <p class="hh-sub">New reporting features, DAX and semantic-model changes, Copilot and agents &mdash; summarised in plain language, with links to Microsoft's own documentation.</p>
+          <div class="hh-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" id="biSearch" placeholder="Search updates: DAX, Copilot, Direct Lake, theme&hellip;" aria-label="Search Power BI and Fabric updates" autocomplete="off">
+          </div>
+          <div class="hh-pop" aria-label="Popular searches"><span>Popular:</span><button type="button" data-hero-q="DAX" data-hero-p="bi">DAX</button><button type="button" data-hero-q="Copilot" data-hero-p="bi">Copilot</button><button type="button" data-hero-q="Direct Lake" data-hero-p="bi">Direct Lake</button><button type="button" data-hero-q="theme" data-hero-p="bi">theme</button><button type="button" data-hero-q="matrix" data-hero-p="bi">matrix</button><button type="button" data-hero-q="refresh" data-hero-p="bi">refresh</button></div>
+          <div class="stat-strip" id="biStats" aria-label="At a glance"></div>
         </div>
+        <div class="hh-marquee" aria-hidden="true"><div class="track" id="biMarquee"></div></div>
+      </header>
+      <div class="container hub-body">
 
-        <div class="stat-strip" id="biStats" aria-label="Power BI digest at a glance"></div>
 
         <div class="tabbar" id="biTabs" role="tablist" aria-label="Power BI digest views">
           <button class="tab-btn active" role="tab" aria-selected="true" data-tab="bi-updates">New features &amp; updates</button>
@@ -226,11 +248,8 @@
         </div>
 
         <div class="tab-panel active" data-panel="bi-updates">
+          <div class="spot-wrap" id="biSpot" hidden></div>
           <div class="hub-toolbar">
-            <div class="search-field">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="search" id="biSearch" placeholder="Search updates, e.g. DAX, Copilot, Direct Lake, themes&hellip;" aria-label="Search Power BI and Fabric updates" autocomplete="off">
-            </div>
             <select class="hub-select" id="biStatus" aria-label="Filter by status"></select>
           </div>
           <div class="chip-bar" id="biThemeChips" role="group" aria-label="Filter by theme"></div>

@@ -13,6 +13,58 @@ const debounce = (fn, ms = 120) => {
 };
 const tokens = (q) => q.toLowerCase().split(/\s+/).filter(Boolean);
 
+const PALETTE = ["#8b5cf6", "#0ea5e9", "#14b8a6", "#f59e0b", "#ec4899", "#6366f1"];
+const CAT_COLORS = { build: "#6366f1", agents: "#14b8a6", growth: "#f59e0b", ops: "#0ea5e9", know: "#8b5cf6", media: "#ec4899" };
+const initial = (n) => (String(n).match(/[A-Za-z0-9]/) || ["?"])[0].toUpperCase();
+const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function runCount(el) {
+  const to = Number(el.dataset.n);
+  if (reduceMotion) return void (el.textContent = to);
+  const t0 = performance.now();
+  const tick = (t) => {
+    const k = Math.min(1, (t - t0) / 1000);
+    el.textContent = Math.round(to * (1 - Math.pow(1 - k, 3)));
+    if (k < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+const countIO =
+  "IntersectionObserver" in window
+    ? new IntersectionObserver((entries, o) => entries.forEach((e) => e.isIntersecting && (runCount(e.target), o.unobserve(e.target))), { threshold: 0.3 })
+    : null;
+function statTiles(el, pairs) {
+  el.innerHTML = pairs.map(([v, l]) => `<div class="stat-tile"><b data-n="${v}">${v}</b><span>${l}</span></div>`).join("");
+  if (countIO) el.querySelectorAll("b").forEach((b) => ((b.textContent = "0"), countIO.observe(b)));
+}
+function marquee(el, names) {
+  const row = names.map((n) => `<span>${esc(n)}</span>`).join("");
+  el.innerHTML = row + row;
+}
+const HERO = { ai: { tab: "explore", sec: "ai" }, dbx: { tab: "dbx-updates", sec: "data" }, bi: { tab: "bi-updates", sec: "bi" } };
+function showResults(p, scroll) {
+  const { tab, sec } = HERO[p];
+  const btn = document.querySelector(`#${sec} [data-tab="${tab}"]`);
+  if (btn && !btn.classList.contains("active")) btn.click();
+  if (scroll) document.querySelector(`#${sec} .hub-body`).scrollIntoView({ behavior: "smooth", block: "start" });
+}
+function wireHero() {
+  document.querySelectorAll("[data-hero-q]").forEach((b) =>
+    b.addEventListener("click", () => {
+      const p = b.dataset.heroP;
+      const inp = $(p + "Search");
+      inp.value = b.dataset.heroQ;
+      inp.dispatchEvent(new Event("input"));
+      showResults(p, true);
+    })
+  );
+  Object.keys(HERO).forEach((p) => {
+    const inp = $(p + "Search");
+    inp.addEventListener("input", () => showResults(p, false));
+    inp.addEventListener("keydown", (e) => e.key === "Enter" && showResults(p, true));
+  });
+}
+
 export async function initHub() {
   try {
     const [dbx, bi, ai] = await Promise.all([import("../data/databricks.js"), import("../data/bi.js"), import("../data/ai-tools.js")]);
@@ -45,6 +97,7 @@ export async function initHub() {
       ],
     });
     initAI(ai);
+    wireHero();
   } catch (err) {
     console.error("Hub failed to load", err);
     ["dbxList", "biList", "aiGrid"].forEach((id) => {
@@ -61,14 +114,27 @@ function initFeed({ p, themes, rows, linkLabel, insights, topics, infographics, 
   const gaCount = items.filter((i) => i.status === "GA").length;
   const earlyCount = items.filter((i) => ["Beta", "Preview", "Frontier"].includes(i.status)).length;
 
-  id("Stats").innerHTML = [
+  statTiles(id("Stats"), [
     [items.length, "curated updates"],
     [gaCount, "generally available"],
     [earlyCount, "in beta or preview"],
     [Object.keys(themes).length, "themes"],
-  ]
-    .map(([v, l]) => `<div class="stat-tile"><b>${v}</b><span>${l}</span></div>`)
-    .join("");
+  ]);
+  marquee(id("Marquee"), items.filter((_, i) => i % 3 === 0).slice(0, 24).map((i) => i.title));
+
+  const colorOf = {};
+  Object.keys(themes).forEach((k, n) => (colorOf[k] = PALETTE[n % PALETTE.length]));
+
+  const spot = [];
+  Object.keys(themes).forEach((k) => {
+    const hit = items.find((i) => i.theme === k && i.status === "GA");
+    if (hit && spot.length < 3) spot.push(hit);
+  });
+  id("Spot").innerHTML = `<div class="spot-head"><h3>Spotlight</h3><span>Generally available and worth knowing</span></div><div class="spot-grid">${spot
+    .map(
+      (i) => `<a class="spot-card" style="--c:${colorOf[i.theme]}" href="${i.url}" target="_blank" rel="noopener noreferrer"><span class="theme-tag">${esc(themes[i.theme])}</span><h4>${esc(i.title)}</h4><p>${esc(i.summary)}</p><em>${linkLabel}${EXT}</em></a>`
+    )
+    .join("")}</div>`;
 
   const state = { theme: "all", status: "all", q: "", shown: 30 };
   const themeCounts = {};
@@ -78,7 +144,7 @@ function initFeed({ p, themes, rows, linkLabel, insights, topics, infographics, 
   chipBar.innerHTML =
     `<button type="button" class="fchip" data-theme="all" aria-pressed="true">All<span class="n">${items.length}</span></button>` +
     Object.entries(themes)
-      .map(([k, label]) => `<button type="button" class="fchip" data-theme="${k}" aria-pressed="false">${esc(label)}<span class="n">${themeCounts[k] || 0}</span></button>`)
+      .map(([k, label]) => `<button type="button" class="fchip" style="--c:${colorOf[k]}" data-theme="${k}" aria-pressed="false"><i class="dot"></i>${esc(label)}<span class="n">${themeCounts[k] || 0}</span></button>`)
       .join("");
 
   const statuses = [...new Set(items.map((i) => i.status))];
@@ -100,7 +166,7 @@ function initFeed({ p, themes, rows, linkLabel, insights, topics, infographics, 
       list
         .slice(0, state.shown)
         .map(
-          (i) => `<li class="upd">
+          (i) => `<li class="upd" style="--c:${colorOf[i.theme]}">
           <div class="upd-meta"><span class="theme-tag">${esc(themes[i.theme])}</span><span class="status s-${i.status.toLowerCase()}">${esc(i.status)}</span></div>
           <h4>${esc(i.title)}</h4>
           <p>${esc(i.summary)}</p>
@@ -108,6 +174,7 @@ function initFeed({ p, themes, rows, linkLabel, insights, topics, infographics, 
         )
         .join("") || `<li><div class="empty-note">No updates match those filters. Try clearing the search.</div></li>`;
     id("Count").textContent = `${list.length} of ${items.length} updates`;
+    id("Spot").hidden = state.theme !== "all" || state.status !== "all" || !!state.q;
     id("More").hidden = list.length <= state.shown;
   }
 
@@ -176,14 +243,13 @@ function initAI({ aiCategories, aiTools, aiPicks }) {
   const recentCount = tools.filter((t) => t.r).length;
   const linkedCount = tools.filter((t) => t.u || t.g).length;
 
-  $("aiStats").innerHTML = [
+  statTiles($("aiStats"), [
     [tools.length, "tools indexed"],
     [Object.keys(aiCategories).length, "categories"],
     [ossCount, "open source"],
     [linkedCount, "with a direct link"],
-  ]
-    .map(([v, l]) => `<div class="stat-tile"><b>${v}</b><span>${l}</span></div>`)
-    .join("");
+  ]);
+  marquee($("aiMarquee"), tools.filter((_, i) => i % 9 === 0).slice(0, 30).map((t) => t.n));
 
   const state = { cat: "all", q: "", oss: false, recent: false, linked: false, sort: "az", shown: 24 };
 
@@ -191,7 +257,7 @@ function initAI({ aiCategories, aiTools, aiPicks }) {
   catBar.innerHTML =
     `<button type="button" class="fchip" data-cat="all" aria-pressed="true">All<span class="n">${tools.length}</span></button>` +
     Object.entries(aiCategories)
-      .map(([k, l]) => `<button type="button" class="fchip" data-cat="${k}" aria-pressed="false">${esc(l)}<span class="n">${catCounts[k] || 0}</span></button>`)
+      .map(([k, l]) => `<button type="button" class="fchip" style="--c:${CAT_COLORS[k]}" data-cat="${k}" aria-pressed="false"><i class="dot"></i>${esc(l)}<span class="n">${catCounts[k] || 0}</span></button>`)
       .join("");
 
   $("aiOss").insertAdjacentHTML("beforeend", `<span class="n">${ossCount}</span>`);
@@ -238,8 +304,8 @@ function initAI({ aiCategories, aiTools, aiPicks }) {
       t.r ? `<span class="badge-mini b-new">Recently featured</span>` : "",
       t.p ? `<span class="badge-mini b-promo">Sponsored in newsletter</span>` : "",
     ].join("");
-    return `<article class="card tool-card" data-i="${t.i}">
-      <header><h4>${esc(t.n)}</h4><span class="cat-tag">${esc(aiCategories[t.c])}</span></header>
+    return `<article class="card tool-card" style="--c:${CAT_COLORS[t.c]}" data-i="${t.i}">
+      <header><span class="avatar" aria-hidden="true">${initial(t.n)}</span><div class="th"><h4>${esc(t.n)}</h4><span class="cat-tag">${esc(aiCategories[t.c])}</span></div></header>
       <p>${esc(t.d)}</p>
       ${badges ? `<div class="tool-badges">${badges}</div>` : ""}
       <div class="tool-actions">${links.join("")}<button type="button" class="insight-btn" aria-expanded="false">Insights</button></div>
@@ -250,6 +316,7 @@ function initAI({ aiCategories, aiTools, aiPicks }) {
     const list = filtered();
     $("aiGrid").innerHTML = list.slice(0, state.shown).map(cardHTML).join("") || `<div class="empty-note" style="grid-column:1/-1">No tools match. Try fewer words, or clear a filter.</div>`;
     $("aiCount").textContent = `${list.length} of ${tools.length} tools`;
+    $("aiFeat").hidden = !!state.q || state.cat !== "all" || state.oss || state.recent || state.linked;
     $("aiMore").hidden = list.length <= state.shown;
   }
 
@@ -382,4 +449,14 @@ function initAI({ aiCategories, aiTools, aiPicks }) {
       return `<article class="card pick-card"><h3>${esc(p.name)}</h3><p>${esc(p.why)}</p>${link ? `<a href="${link}" target="_blank" rel="noopener noreferrer nofollow">Visit${EXT}</a>` : t ? `<a href="${searchUrl(t.n)}" target="_blank" rel="noopener noreferrer nofollow">Search the web${EXT}</a>` : ""}</article>`;
     })
     .join("");
+
+  /* ---------- Featured strip on the Explore tab ---------- */
+  const feat = aiPicks.slice(0, 4).map((p) => ({ p, t: byName.get(p.name.toLowerCase()) })).filter((x) => x.t);
+  $("aiFeat").innerHTML = `<div class="spot-head"><h3>Editor’s picks</h3><span>A few worth a look first</span></div><div class="spot-grid four">${feat
+    .map(({ p, t }) => {
+      const href = t.u || t.g || searchUrl(t.n);
+      return `<a class="spot-card" style="--c:${CAT_COLORS[t.c]}" href="${href}" target="_blank" rel="noopener noreferrer nofollow"><span class="avatar" aria-hidden="true">${initial(t.n)}</span><h4>${esc(t.n)}</h4><p>${esc(p.why)}</p><em>${t.u || t.g ? "Visit" : "Search the web"}${EXT}</em></a>`;
+    })
+    .join("")}</div>`;
+  render();
 }

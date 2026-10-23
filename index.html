@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Balachandra Srinevasalu — Data &amp; Analytics Leader | Enterprise Data Architecture &amp; Strategy</title>
-<meta name="description" content="Databricks release digest, a searchable AI tools index, and the portfolio of Balachandra Srinevasalu — 23 years leading enterprise data strategy, BI &amp; data warehousing modernization, Lakehouse platforms, governance and AI/GenAI. Bengaluru, India.">
+<meta name="description" content="AI tools index, Databricks and Power BI release digests, and the profile of Balachandra Srinevasalu — 23 years leading enterprise data strategy, BI &amp; data warehousing modernization, Lakehouse platforms, governance and AI/GenAI. Bengaluru, India.">
 <meta name="keywords" content="Data and Analytics Leader, Enterprise Data Architecture, Data Architect, Data Strategy, Lakehouse Architecture, Databricks, Unity Catalog, Microsoft Fabric, Power BI, Data Governance, Data Warehousing, Semantic Modelling, Bengaluru">
 <meta name="author" content="Balachandra Srinevasalu">
 <meta name="robots" content="index, follow">
@@ -68,20 +68,16 @@
 <!-- ============ HEADER / NAV ============ -->
 <header class="site-header" id="siteHeader">
   <div class="nav-inner">
-    <a href="#data" class="brand">
+    <a href="#ai" class="brand">
       <span class="brand-mark">BS</span>
       <span class="brand-text">Balachandra&nbsp;Srinevasalu</span>
     </a>
 
     <nav class="nav-links" id="navLinks" aria-label="Primary">
-      <a href="#data" data-nav>Data</a>
-      <a href="#ai" data-nav>AI</a>
-      <a href="#home" data-nav>Portfolio</a>
-      <a href="#journey" data-nav>Journey</a>
-      <a href="#expertise" data-nav>Expertise</a>
-      <a href="#programs" data-nav>Programs</a>
-      <a href="#credentials" data-nav>Credentials</a>
-      <a href="#contact" data-nav>Contact</a>
+      <a href="#ai" data-pane-link="ai">AI</a>
+      <a href="#data" data-pane-link="data">Data</a>
+      <a href="#bi" data-pane-link="bi">BI</a>
+      <a href="#profile" data-pane-link="profile">Profile</a>
     </nav>
 
     <div class="nav-actions">
@@ -98,124 +94,185 @@
 
 <main id="main">
 
-  <!-- ============ DATA HUB: DATABRICKS ============ -->
-  <section class="hub hub-data" id="data">
-    <div class="container">
-      <div class="section-head reveal in-view">
-        <p class="eyebrow">Data · Databricks Watch</p>
-        <h2>What's New on Databricks</h2>
-        <p class="hub-lede">A searchable digest of platform releases from July to October 2026 &mdash; summarised in my own words, grouped by theme, with a link to the official release notes for every item.</p>
-      </div>
+  <div class="pane" id="pane-ai" data-pane="ai">
+    <section class="hub hub-ai" id="ai">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">AI · Tools Index</p>
+          <h2>AI Tools Explorer</h2>
+          <p class="hub-lede">A searchable index of AI tools I've seen in daily roundups &mdash; filter by category, search by what you need, and open an insights drawer for similar tools and key themes.</p>
+        </div>
 
-      <div class="stat-strip" id="dbxStats" aria-label="Databricks digest at a glance"></div>
+        <div class="stat-strip" id="aiStats" aria-label="AI tools index at a glance"></div>
 
-      <div class="tabbar" id="dataTabs" role="tablist" aria-label="Databricks digest views">
-        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="updates">New features &amp; updates</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="takeaways">Key takeaways</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="infographics">Infographics</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="topics">Practitioner topics</button>
-      </div>
+        <div class="tabbar" id="aiTabs" role="tablist" aria-label="AI tools views">
+          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="explore">Explore tools</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="insights">Insights</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="shortlist">Shortlist</button>
+        </div>
 
-      <div class="tab-panel active" data-panel="updates">
-        <div class="hub-toolbar">
-          <div class="search-field">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="search" id="dbxSearch" placeholder="Search updates, e.g. Genie, Unity Catalog, lineage&hellip;" aria-label="Search Databricks updates" autocomplete="off">
+        <div class="tab-panel active" data-panel="explore">
+          <div class="hub-toolbar">
+            <div class="search-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="search" id="aiSearch" placeholder="Search tools or needs, e.g. video, SQL, meeting notes&hellip;" aria-label="Search AI tools" autocomplete="off">
+            </div>
+            <select class="hub-select" id="aiSort" aria-label="Sort tools">
+              <option value="az">Sort: A&ndash;Z</option>
+              <option value="featured">Sort: Recently featured first</option>
+            </select>
           </div>
-          <select class="hub-select" id="dbxStatus" aria-label="Filter by status"></select>
-          <select class="hub-select" id="dbxMonth" aria-label="Filter by month"></select>
-        </div>
-        <div class="chip-bar" id="dbxThemeChips" role="group" aria-label="Filter by theme"></div>
-        <p class="result-count" id="dbxCount" role="status" aria-live="polite"></p>
-        <ul class="upd-list" id="dbxList"></ul>
-        <div class="more-wrap" id="dbxMore" hidden><button type="button" class="btn btn-outline">Show more updates</button></div>
-      </div>
-
-      <div class="tab-panel" data-panel="takeaways">
-        <div class="insight-grid" id="dbxInsights"></div>
-      </div>
-
-      <div class="tab-panel" data-panel="infographics">
-        <div class="info-grid" id="dbxInfo"></div>
-      </div>
-
-      <div class="tab-panel" data-panel="topics">
-        <div class="topic-grid" id="dbxTopics"></div>
-      </div>
-
-      <div class="hub-note">
-        <strong>Sources &amp; attribution.</strong> Facts come from Databricks' public release notes; summaries and infographics are my own original work.
-        Practitioner topics were inspired by community newsletters and are paraphrased, not reproduced. This is an independent digest &mdash;
-        not affiliated with, sponsored or endorsed by Databricks. Databricks, Unity Catalog, Genie and Delta Lake are trademarks of their respective owners.
-        Always check the official documentation before relying on a feature.
-        <ul class="source-list" id="dbxSources"></ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ AI HUB: TOOLS INDEX ============ -->
-  <section class="hub hub-ai section-alt" id="ai">
-    <div class="container">
-      <div class="section-head reveal">
-        <p class="eyebrow">AI · Tools Index</p>
-        <h2>AI Tools Explorer</h2>
-        <p class="hub-lede">A searchable index of AI tools I've seen in daily roundups &mdash; filter by category, search by what you need, and open an insights drawer for similar tools and key themes.</p>
-      </div>
-
-      <div class="stat-strip" id="aiStats" aria-label="AI tools index at a glance"></div>
-
-      <div class="tabbar" id="aiTabs" role="tablist" aria-label="AI tools views">
-        <button class="tab-btn active" role="tab" aria-selected="true" data-tab="explore">Explore tools</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="insights">Insights</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="shortlist">Shortlist</button>
-        <button class="tab-btn" role="tab" aria-selected="false" data-tab="issues">Daily issues</button>
-      </div>
-
-      <div class="tab-panel active" data-panel="explore">
-        <div class="hub-toolbar">
-          <div class="search-field">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-            <input type="search" id="aiSearch" placeholder="Search tools or needs, e.g. video, SQL, meeting notes&hellip;" aria-label="Search AI tools" autocomplete="off">
+          <div class="chip-bar" id="aiCats" role="group" aria-label="Filter by category"></div>
+          <div class="chip-bar" role="group" aria-label="Quick filters">
+            <button type="button" class="fchip toggle" id="aiOss" aria-pressed="false">Open source</button>
+            <button type="button" class="fchip toggle" id="aiRecent" aria-pressed="false">Recently featured</button>
+            <button type="button" class="fchip toggle" id="aiLinked" aria-pressed="false">Has a link</button>
           </div>
-          <select class="hub-select" id="aiSort" aria-label="Sort tools">
-            <option value="az">Sort: A&ndash;Z</option>
-            <option value="new">Sort: Newest first</option>
-          </select>
+          <p class="result-count" id="aiCount" role="status" aria-live="polite"></p>
+          <div class="tool-grid" id="aiGrid"></div>
+          <div class="more-wrap" id="aiMore" hidden><button type="button" class="btn btn-outline">Show more tools</button></div>
         </div>
-        <div class="chip-bar" id="aiCats" role="group" aria-label="Filter by category"></div>
-        <div class="chip-bar" role="group" aria-label="Quick filters">
-          <button type="button" class="fchip toggle" id="aiOss" aria-pressed="false">Open source</button>
-          <button type="button" class="fchip toggle" id="aiRecent" aria-pressed="false">Seen in October</button>
-          <button type="button" class="fchip toggle" id="aiLinked" aria-pressed="false">Has a link</button>
+
+        <div class="tab-panel" data-panel="insights">
+          <div id="aiInsights"></div>
         </div>
-        <p class="result-count" id="aiCount" role="status" aria-live="polite"></p>
-        <div class="tool-grid" id="aiGrid"></div>
-        <div class="more-wrap" id="aiMore" hidden><button type="button" class="btn btn-outline">Show more tools</button></div>
-      </div>
 
-      <div class="tab-panel" data-panel="insights">
-        <div id="aiInsights"></div>
-      </div>
+        <div class="tab-panel" data-panel="shortlist">
+          <div class="pick-grid" id="aiShortlist"></div>
+        </div>
 
-      <div class="tab-panel" data-panel="shortlist">
-        <div class="pick-grid" id="aiShortlist"></div>
+        <div class="hub-note">
+          <strong>About this index.</strong> Tool names and one-line descriptions are compiled from public daily AI-tool roundups
+          (&ldquo;There's An AI For That&rdquo; and similar) and rewritten in short, neutral language. Entries are listed for reference only &mdash; no endorsement implied,
+          and listings marked &ldquo;Sponsored in newsletter&rdquo; carry no link here. Product names and logos belong to their owners.
+          Features and pricing change quickly; verify on the vendor's site and review its data terms before use.
+          If you own a listed tool and want a change or removal, please <a href="#contact">get in touch</a>.
+        </div>
       </div>
+    </section>
+  </div>
 
-      <div class="tab-panel" data-panel="issues">
-        <div class="issue-list" id="aiIssues"></div>
+  <div class="pane" id="pane-data" data-pane="data" hidden>
+    <section class="hub hub-data" id="data">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Data · Databricks Watch</p>
+          <h2>What's New on Databricks</h2>
+          <p class="hub-lede">A searchable digest of recent Databricks platform releases &mdash; summarised in my own words, grouped by theme, with a link to the official release notes for every item.</p>
+        </div>
+
+        <div class="stat-strip" id="dbxStats" aria-label="Databricks digest at a glance"></div>
+
+        <div class="tabbar" id="dataTabs" role="tablist" aria-label="Databricks digest views">
+          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="dbx-updates">New features &amp; updates</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="dbx-takeaways">Key takeaways</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="dbx-infographics">Infographics</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="dbx-topics">Practitioner topics</button>
+        </div>
+
+        <div class="tab-panel active" data-panel="dbx-updates">
+          <div class="hub-toolbar">
+            <div class="search-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="search" id="dbxSearch" placeholder="Search updates, e.g. Genie, Unity Catalog, lineage&hellip;" aria-label="Search Databricks updates" autocomplete="off">
+            </div>
+            <select class="hub-select" id="dbxStatus" aria-label="Filter by status"></select>
+          </div>
+          <div class="chip-bar" id="dbxThemeChips" role="group" aria-label="Filter by theme"></div>
+          <p class="result-count" id="dbxCount" role="status" aria-live="polite"></p>
+          <ul class="upd-list" id="dbxList"></ul>
+          <div class="more-wrap" id="dbxMore" hidden><button type="button" class="btn btn-outline">Show more updates</button></div>
+        </div>
+
+        <div class="tab-panel" data-panel="dbx-takeaways">
+          <div class="insight-grid" id="dbxInsights"></div>
+        </div>
+
+        <div class="tab-panel" data-panel="dbx-infographics">
+          <div class="info-grid" id="dbxInfo"></div>
+        </div>
+
+        <div class="tab-panel" data-panel="dbx-topics">
+          <div class="topic-grid" id="dbxTopics"></div>
+        </div>
+
+        <div class="hub-note">
+          <strong>Sources &amp; attribution.</strong> Facts come from Databricks' public release notes; summaries and infographics are my own original work.
+          Practitioner topics were inspired by community newsletters and are paraphrased, not reproduced. This is an independent digest &mdash;
+          not affiliated with, sponsored or endorsed by Databricks. Databricks, Unity Catalog, Genie and Delta Lake are trademarks of their respective owners.
+          Always check the official documentation before relying on a feature.
+          <ul class="source-list" id="dbxSources"></ul>
+        </div>
       </div>
+    </section>
+  </div>
 
-      <div class="hub-note">
-        <strong>About this index.</strong> Tool names and one-line descriptions are compiled from public daily AI-tool roundups
-        (&ldquo;There's An AI For That&rdquo; and similar) and rewritten in short, neutral language. Entries are listed for reference only &mdash; no endorsement implied,
-        and listings marked &ldquo;Sponsored in newsletter&rdquo; carry no link here. Product names and logos belong to their owners.
-        Features and pricing change quickly; verify on the vendor's site and review its data terms before use.
-        If you own a listed tool and want a change or removal, please <a href="#contact">get in touch</a>.
+  <div class="pane" id="pane-bi" data-pane="bi" hidden>
+    <section class="hub hub-bi" id="bi">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">BI · Power BI &amp; Fabric Watch</p>
+          <h2>What's New in Power BI &amp; Fabric</h2>
+          <p class="hub-lede">A searchable digest of recent Power BI and Microsoft Fabric features &mdash; reporting, semantic models and DAX, Copilot and agents, governance &mdash; summarised in my own words with a link to the official Microsoft documentation.</p>
+        </div>
+
+        <div class="stat-strip" id="biStats" aria-label="Power BI digest at a glance"></div>
+
+        <div class="tabbar" id="biTabs" role="tablist" aria-label="Power BI digest views">
+          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="bi-updates">New features &amp; updates</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="bi-takeaways">Key takeaways</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="bi-infographics">Infographics</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="bi-topics">Practitioner topics</button>
+        </div>
+
+        <div class="tab-panel active" data-panel="bi-updates">
+          <div class="hub-toolbar">
+            <div class="search-field">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="search" id="biSearch" placeholder="Search updates, e.g. DAX, Copilot, Direct Lake, themes&hellip;" aria-label="Search Power BI and Fabric updates" autocomplete="off">
+            </div>
+            <select class="hub-select" id="biStatus" aria-label="Filter by status"></select>
+          </div>
+          <div class="chip-bar" id="biThemeChips" role="group" aria-label="Filter by theme"></div>
+          <p class="result-count" id="biCount" role="status" aria-live="polite"></p>
+          <ul class="upd-list" id="biList"></ul>
+          <div class="more-wrap" id="biMore" hidden><button type="button" class="btn btn-outline">Show more updates</button></div>
+        </div>
+
+        <div class="tab-panel" data-panel="bi-takeaways">
+          <div class="insight-grid" id="biInsights"></div>
+        </div>
+
+        <div class="tab-panel" data-panel="bi-infographics">
+          <div class="info-grid" id="biInfo"></div>
+        </div>
+
+        <div class="tab-panel" data-panel="bi-topics">
+          <div class="topic-grid" id="biTopics"></div>
+        </div>
+
+        <div class="hub-note">
+          <strong>Sources &amp; attribution.</strong> Facts come from Microsoft's public documentation (Microsoft Learn); summaries and infographics are my own original work.
+          Practitioner topics were inspired by community newsletters and training providers and are paraphrased, not reproduced. This is an independent digest &mdash;
+          not affiliated with, sponsored or endorsed by Microsoft. Power BI, Microsoft Fabric, Copilot, DAX and OneLake are trademarks of Microsoft.
+          Many items are in preview; check the official documentation for current availability before relying on a feature.
+          <ul class="source-list" id="biSources"></ul>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 
-  <div class="portfolio-divider" aria-hidden="true"><div class="container"><span>My Portfolio</span><i></i></div></div>
+  <div class="pane" id="pane-profile" data-pane="profile" hidden>
+    <nav class="subnav" aria-label="Profile sections">
+      <div class="container">
+        <a href="#home">Overview</a>
+        <a href="#journey">Journey</a>
+        <a href="#expertise">Expertise</a>
+        <a href="#programs">Programs</a>
+        <a href="#credentials">Credentials</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
 
   <!-- ============ HERO / EXECUTIVE PROFILE ============ -->
   <section class="hero" id="home">
@@ -545,6 +602,8 @@
     </div>
   </section>
 
+  </div>
+
 </main>
 
 <footer class="site-footer">
@@ -555,7 +614,7 @@
       <a href="https://github.com/chandrra111" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
     </div>
     <p>&copy; <span id="year"></span> Balachandra Srinevasalu. Built with semantic HTML, CSS, and vanilla JS — hosted on GitHub Pages.</p>
-    <p class="footer-fine">Databricks and all other product names are trademarks of their respective owners. The Data and AI sections are independent summaries, not affiliated with or endorsed by any vendor.</p>
+    <p class="footer-fine">Databricks, Microsoft, Power BI and all other product names are trademarks of their respective owners. The AI, Data and BI sections are independent summaries, not affiliated with or endorsed by any vendor.</p>
   </div>
 </footer>
 
@@ -563,7 +622,7 @@
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
 </button>
 
-<noscript><p style="text-align:center;padding:16px">The Data and AI explorers need JavaScript. Databricks release notes: <a href="https://docs.databricks.com/aws/en/release-notes/product/">docs.databricks.com</a>.</p></noscript>
+<noscript><p style="text-align:center;padding:16px">The AI, Data and BI explorers and the profile pages need JavaScript.</p></noscript>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" defer></script>
 <script type="module" src="assets/js/main.js"></script>
 </body>

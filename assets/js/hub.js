@@ -3,22 +3,7 @@ import { openLightbox } from "./lightbox.js";
 const $ = (id) => document.getElementById(id);
 const esc = (s) =>
   String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const EXT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" aria-hidden="true" style="vertical-align:-1px;margin-left:3px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
-
-const parseISO = (iso) => {
-  const [y, m, d] = iso.split("-").map(Number);
-  return { y, m, d, date: new Date(Date.UTC(y, m - 1, d)) };
-};
-const shortDate = (iso) => {
-  const { m, d } = parseISO(iso);
-  return `${d} ${MONTHS[m - 1].slice(0, 3)}`;
-};
-const monthLabel = (ym) => {
-  const [y, m] = ym.split("-").map(Number);
-  return `${MONTHS[m - 1]} ${y}`;
-};
 const debounce = (fn, ms = 120) => {
   let t;
   return (...a) => {
@@ -30,55 +15,74 @@ const tokens = (q) => q.toLowerCase().split(/\s+/).filter(Boolean);
 
 export async function initHub() {
   try {
-    const [dbx, ai] = await Promise.all([import("../data/databricks.js"), import("../data/ai-tools.js")]);
-    initDatabricks(dbx);
+    const [dbx, bi, ai] = await Promise.all([import("../data/databricks.js"), import("../data/bi.js"), import("../data/ai-tools.js")]);
+    initFeed({
+      p: "dbx",
+      themes: dbx.dbxThemes,
+      rows: dbx.dbxUpdates.map(([theme, status, title, summary, url]) => ({ theme, status, title, summary, url })),
+      linkLabel: "Official release notes",
+      insights: dbx.dbxInsights,
+      topics: dbx.dbxTopics,
+      infographics: dbx.dbxInfographics,
+      sources: [
+        { name: "Databricks platform release notes", url: dbx.dbxReleaseNotes, lead: "Facts" },
+        ...dbx.dbxSources.map((s) => ({ ...s, lead: "Reading list" })),
+      ],
+    });
+    initFeed({
+      p: "bi",
+      themes: bi.biThemes,
+      rows: bi.biUpdates.map(([theme, status, title, summary, src]) => ({ theme, status, title, summary, url: bi.biSources[src] })),
+      linkLabel: "Official docs",
+      insights: bi.biInsights,
+      topics: bi.biTopics,
+      infographics: bi.biInfographics,
+      sources: [
+        { name: "What's new in Power BI (Microsoft Learn)", url: bi.biSources.p, lead: "Facts" },
+        { name: "Power BI monthly updates archive", url: bi.biSources.a, lead: "Facts" },
+        { name: "What's new in Microsoft Fabric", url: bi.biSources.f, lead: "Facts" },
+        ...bi.biNewsSources.map((s) => ({ ...s, lead: "Reading list" })),
+      ],
+    });
     initAI(ai);
   } catch (err) {
     console.error("Hub failed to load", err);
-    ["dbxList", "aiGrid"].forEach((id) => {
+    ["dbxList", "biList", "aiGrid"].forEach((id) => {
       const el = $(id);
       if (el) el.innerHTML = `<div class="empty-note">Couldn't load this section. Please refresh the page.</div>`;
     });
   }
 }
 
-/* ============================ DATABRICKS ============================ */
-function initDatabricks({ dbxMonths, dbxThemes, dbxUpdates, dbxInsights, dbxTopics, dbxSources, dbxInfographics }) {
-  const items = dbxUpdates.map(([date, theme, status, title, summary]) => ({ date, theme, status, title, summary, ym: date.slice(0, 7) }));
-  items.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
-
+/* ===================== Release digests (Databricks, Power BI) ===================== */
+function initFeed({ p, themes, rows, linkLabel, insights, topics, infographics, sources }) {
+  const id = (s) => $(p + s);
+  const items = rows;
   const gaCount = items.filter((i) => i.status === "GA").length;
-  $("dbxStats").innerHTML = [
+  const earlyCount = items.filter((i) => ["Beta", "Preview", "Frontier"].includes(i.status)).length;
+
+  id("Stats").innerHTML = [
     [items.length, "curated updates"],
     [gaCount, "generally available"],
-    [Object.keys(dbxMonths).length, "months covered"],
-    [Object.keys(dbxThemes).length, "themes"],
+    [earlyCount, "in beta or preview"],
+    [Object.keys(themes).length, "themes"],
   ]
     .map(([v, l]) => `<div class="stat-tile"><b>${v}</b><span>${l}</span></div>`)
     .join("");
 
-  const state = { theme: "all", status: "all", month: "all", q: "", shown: 30 };
+  const state = { theme: "all", status: "all", q: "", shown: 30 };
   const themeCounts = {};
   items.forEach((i) => (themeCounts[i.theme] = (themeCounts[i.theme] || 0) + 1));
 
-  const chipBar = $("dbxThemeChips");
+  const chipBar = id("ThemeChips");
   chipBar.innerHTML =
     `<button type="button" class="fchip" data-theme="all" aria-pressed="true">All<span class="n">${items.length}</span></button>` +
-    Object.entries(dbxThemes)
+    Object.entries(themes)
       .map(([k, label]) => `<button type="button" class="fchip" data-theme="${k}" aria-pressed="false">${esc(label)}<span class="n">${themeCounts[k] || 0}</span></button>`)
       .join("");
 
   const statuses = [...new Set(items.map((i) => i.status))];
-  $("dbxStatus").innerHTML = `<option value="all">All statuses</option>` + statuses.map((s) => `<option>${esc(s)}</option>`).join("");
-  $("dbxMonth").innerHTML =
-    `<option value="all">All months</option>` +
-    Object.keys(dbxMonths)
-      .sort()
-      .reverse()
-      .map((m) => `<option value="${m}">${monthLabel(m)}</option>`)
-      .join("");
-
-  const statusClass = (s) => "s-" + s.toLowerCase();
+  id("Status").innerHTML = `<option value="all">All statuses</option>` + statuses.map((s) => `<option>${esc(s)}</option>`).join("");
 
   function filtered() {
     const tk = tokens(state.q);
@@ -86,35 +90,25 @@ function initDatabricks({ dbxMonths, dbxThemes, dbxUpdates, dbxInsights, dbxTopi
       (i) =>
         (state.theme === "all" || i.theme === state.theme) &&
         (state.status === "all" || i.status === state.status) &&
-        (state.month === "all" || i.ym === state.month) &&
         tk.every((t) => (i.title + " " + i.summary).toLowerCase().includes(t))
     );
   }
 
   function render() {
     const list = filtered();
-    const slice = list.slice(0, state.shown);
-    const monthTotals = {};
-    list.forEach((i) => (monthTotals[i.ym] = (monthTotals[i.ym] || 0) + 1));
-    let html = "";
-    let last = "";
-    slice.forEach((i) => {
-      if (i.ym !== last) {
-        last = i.ym;
-        html += `<li class="upd-month">${monthLabel(i.ym)}<small>${monthTotals[i.ym]} update${monthTotals[i.ym] === 1 ? "" : "s"}</small></li>`;
-      }
-      html += `<li class="upd">
-        <div class="upd-date">${shortDate(i.date)}</div>
-        <div>
-          <div class="upd-meta"><span class="theme-tag">${esc(dbxThemes[i.theme])}</span><span class="status ${statusClass(i.status)}">${esc(i.status)}</span></div>
+    id("List").innerHTML =
+      list
+        .slice(0, state.shown)
+        .map(
+          (i) => `<li class="upd">
+          <div class="upd-meta"><span class="theme-tag">${esc(themes[i.theme])}</span><span class="status s-${i.status.toLowerCase()}">${esc(i.status)}</span></div>
           <h4>${esc(i.title)}</h4>
           <p>${esc(i.summary)}</p>
-          <a href="${dbxMonths[i.ym]}" target="_blank" rel="noopener noreferrer">Official release notes${EXT}</a>
-        </div></li>`;
-    });
-    $("dbxList").innerHTML = html || `<li><div class="empty-note">No updates match those filters. Try clearing the search.</div></li>`;
-    $("dbxCount").textContent = `${list.length} of ${items.length} updates`;
-    $("dbxMore").hidden = list.length <= state.shown;
+          <a href="${i.url}" target="_blank" rel="noopener noreferrer">${linkLabel}${EXT}</a></li>`
+        )
+        .join("") || `<li><div class="empty-note">No updates match those filters. Try clearing the search.</div></li>`;
+    id("Count").textContent = `${list.length} of ${items.length} updates`;
+    id("More").hidden = list.length <= state.shown;
   }
 
   chipBar.addEventListener("click", (e) => {
@@ -125,19 +119,16 @@ function initDatabricks({ dbxMonths, dbxThemes, dbxUpdates, dbxInsights, dbxTopi
     chipBar.querySelectorAll(".fchip").forEach((c) => c.setAttribute("aria-pressed", String(c === b)));
     render();
   });
-  $("dbxStatus").addEventListener("change", (e) => ((state.status = e.target.value), (state.shown = 30), render()));
-  $("dbxMonth").addEventListener("change", (e) => ((state.month = e.target.value), (state.shown = 30), render()));
-  $("dbxSearch").addEventListener("input", debounce((e) => ((state.q = e.target.value.trim()), (state.shown = 30), render())));
-  $("dbxMore").querySelector("button").addEventListener("click", () => ((state.shown += 30), render()));
+  id("Status").addEventListener("change", (e) => ((state.status = e.target.value), (state.shown = 30), render()));
+  id("Search").addEventListener("input", debounce((e) => ((state.q = e.target.value.trim()), (state.shown = 30), render())));
+  id("More").querySelector("button").addEventListener("click", () => ((state.shown += 30), render()));
   render();
 
-  // Takeaways
-  $("dbxInsights").innerHTML = dbxInsights
+  id("Insights").innerHTML = insights
     .map((t, i) => `<article class="card insight-card"><div class="num">0${i + 1}</div><h3>${esc(t.title)}</h3><p>${esc(t.body)}</p></article>`)
     .join("");
 
-  // Infographics
-  $("dbxInfo").innerHTML = dbxInfographics
+  id("Info").innerHTML = infographics
     .map(
       (g) => `<figure class="card info-card">
         <button type="button" class="thumb" data-id="${g.id}" aria-label="View ${esc(g.title)} full size">
@@ -150,26 +141,20 @@ function initDatabricks({ dbxMonths, dbxThemes, dbxUpdates, dbxInsights, dbxTopi
         </figcaption></figure>`
     )
     .join("");
-  $("dbxInfo").addEventListener("click", (e) => {
+  id("Info").addEventListener("click", (e) => {
     const b = e.target.closest("button.thumb");
     if (!b) return;
-    const g = dbxInfographics.find((x) => x.id === b.dataset.id);
+    const g = infographics.find((x) => x.id === b.dataset.id);
     openLightbox({ image: g.file + ".svg", title: g.title, subtitle: esc(g.caption), linkUrl: g.file + ".png", linkLabel: "Download PNG", wide: true, download: true });
   });
 
-  // Topics
-  $("dbxTopics").innerHTML = dbxTopics
+  id("Topics").innerHTML = topics
     .map((t) => `<article class="card topic-card"><div class="area">${esc(t.area)}</div><h3>${esc(t.title)}</h3><p>${esc(t.body)}</p><div class="from">Topic seen in: ${esc(t.from)}</div></article>`)
     .join("");
 
-  // Sources
-  $("dbxSources").innerHTML =
-    `<li>Databricks platform release notes — ` +
-    Object.keys(dbxMonths)
-      .map((m) => `<a href="${dbxMonths[m]}" target="_blank" rel="noopener noreferrer">${monthLabel(m)}</a>`)
-      .join(" · ") +
-    `</li>` +
-    dbxSources.map((s) => `<li>Reading list: <a href="${s.url}" target="_blank" rel="noopener noreferrer">${esc(s.name)}</a></li>`).join("");
+  id("Sources").innerHTML = sources
+    .map((s) => `<li>${esc(s.lead)}: <a href="${s.url}" target="_blank" rel="noopener noreferrer">${esc(s.name)}</a></li>`)
+    .join("");
 }
 
 /* ================================ AI ================================ */
@@ -179,7 +164,7 @@ const STOP = new Set(
   )
 );
 
-function initAI({ aiCategories, aiTools, aiIssues, aiPicks }) {
+function initAI({ aiCategories, aiTools, aiPicks }) {
   const tools = aiTools.map((t, i) => {
     const words = new Set((t.d.toLowerCase().match(/[a-z][a-z-]{2,}/g) || []).filter((w) => !STOP.has(w)));
     return { ...t, i, words, hay: (t.n + " " + t.d).toLowerCase() };
@@ -188,14 +173,14 @@ function initAI({ aiCategories, aiTools, aiIssues, aiPicks }) {
   const catCounts = {};
   tools.forEach((t) => (catCounts[t.c] = (catCounts[t.c] || 0) + 1));
   const ossCount = tools.filter((t) => t.o).length;
-  const recentCount = tools.filter((t) => t.t).length;
+  const recentCount = tools.filter((t) => t.r).length;
   const linkedCount = tools.filter((t) => t.u || t.g).length;
 
   $("aiStats").innerHTML = [
     [tools.length, "tools indexed"],
     [Object.keys(aiCategories).length, "categories"],
     [ossCount, "open source"],
-    [aiIssues.length, "daily issues tracked"],
+    [linkedCount, "with a direct link"],
   ]
     .map(([v, l]) => `<div class="stat-tile"><b>${v}</b><span>${l}</span></div>`)
     .join("");
@@ -227,17 +212,17 @@ function initAI({ aiCategories, aiTools, aiIssues, aiPicks }) {
 
   function filtered() {
     const tk = tokens(state.q);
-    let list = tools.filter(
+    const list = tools.filter(
       (t) =>
         (state.cat === "all" || t.c === state.cat) &&
         (!state.oss || t.o) &&
-        (!state.recent || t.t) &&
+        (!state.recent || t.r) &&
         (!state.linked || t.u || t.g) &&
         tk.every((x) => t.hay.includes(x))
     );
-    if (tk.length) list.sort((a, b) => score(b, tk) - score(a, tk) || a.n.localeCompare(b.n));
-    else if (state.sort === "new")
-      list.sort((a, b) => (b.t ? b.t[0] : "").localeCompare(a.t ? a.t[0] : "") || a.n.localeCompare(b.n, "en", { sensitivity: "base" }));
+    const az = (a, b) => a.n.localeCompare(b.n, "en", { sensitivity: "base" });
+    if (tk.length) list.sort((a, b) => score(b, tk) - score(a, tk) || az(a, b));
+    else if (state.sort === "featured") list.sort((a, b) => (b.r ? 1 : 0) - (a.r ? 1 : 0) || az(a, b));
     return list;
   }
 
@@ -250,7 +235,7 @@ function initAI({ aiCategories, aiTools, aiIssues, aiPicks }) {
     if (!t.u && !t.g) links.push(`<a href="${searchUrl(t.n)}" target="_blank" rel="noopener noreferrer nofollow">Search the web${EXT}</a>`);
     const badges = [
       t.o ? `<span class="badge-mini b-oss">Open source</span>` : "",
-      t.t ? `<span class="badge-mini b-new">October issue</span>` : "",
+      t.r ? `<span class="badge-mini b-new">Recently featured</span>` : "",
       t.p ? `<span class="badge-mini b-promo">Sponsored in newsletter</span>` : "",
     ].join("");
     return `<article class="card tool-card" data-i="${t.i}">
@@ -322,7 +307,6 @@ function initAI({ aiCategories, aiTools, aiIssues, aiPicks }) {
         box.innerHTML =
           `<h5>Key themes</h5><div class="row">${kws.map((k) => `<button type="button" class="mini-chip" data-q="${esc(k)}">${esc(k)}</button>`).join("") || "<span>No themes detected.</span>"}</div>` +
           `<h5>Similar tools in ${esc(aiCategories[t.c])}</h5><div class="row">${rel.map((r) => `<button type="button" class="mini-chip" data-q="${esc(r.n)}">${esc(r.n)}</button>`).join("") || "<span>No close matches.</span>"}</div>` +
-          (t.t ? `<h5>Seen in</h5><div class="row"><span>${t.t.map(shortDate).join(", ")} issues</span></div>` : "") +
           `<div class="row"><span>Check pricing and data terms before using any tool with company data.</span></div>`;
         box.dataset.built = "1";
       }
@@ -366,7 +350,7 @@ function initAI({ aiCategories, aiTools, aiIssues, aiPicks }) {
         <div class="fact-list">
           <p><b>${esc(aiCategories[topCat])}</b> is the largest category with ${topCatN} tools (${pct(topCatN)}%); <b>${esc(aiCategories[lowCat])}</b> is the smallest at ${lowCatN} (${pct(lowCatN)}%).</p>
           <p>Only <b>${ossCount}</b> tools (${pct(ossCount)}%) are open source, so most of this market is commercial and priced per seat or by usage.</p>
-          <p><b>${recentCount}</b> tools appeared in the ${aiIssues.length} October issues tracked; ${linkedCount} have a direct link here.</p>
+          <p><b>${recentCount}</b> tools were featured in recent roundups; ${linkedCount} have a direct link here.</p>
         </div>
         <h3 style="margin-top:28px">Before you adopt a tool</h3>
         <ul class="check-list">
@@ -398,19 +382,4 @@ function initAI({ aiCategories, aiTools, aiIssues, aiPicks }) {
       return `<article class="card pick-card"><h3>${esc(p.name)}</h3><p>${esc(p.why)}</p>${link ? `<a href="${link}" target="_blank" rel="noopener noreferrer nofollow">Visit${EXT}</a>` : t ? `<a href="${searchUrl(t.n)}" target="_blank" rel="noopener noreferrer nofollow">Search the web${EXT}</a>` : ""}</article>`;
     })
     .join("");
-
-  /* ---------- Daily issues ---------- */
-  $("aiIssues").innerHTML = [...aiIssues]
-    .sort((a, b) => b.d.localeCompare(a.d))
-    .map((i) => {
-      const { m, d, date } = parseISO(i.d);
-      return `<div class="card issue"><div class="d">${d} ${MONTHS[m - 1].slice(0, 3)}<small>${DAYS[date.getUTCDay()]} · ${i.t.length} tools</small></div>
-        <div class="tools">${i.t.map((n) => `<button type="button" class="mini-chip" data-q="${esc(n)}">${esc(n)}</button>`).join("")}</div>
-        <a href="${i.u}" target="_blank" rel="noopener noreferrer">Read the issue${EXT}</a></div>`;
-    })
-    .join("");
-  $("aiIssues").addEventListener("click", (e) => {
-    const c = e.target.closest("[data-q]");
-    if (c) setSearch(c.dataset.q);
-  });
 }

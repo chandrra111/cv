@@ -27,27 +27,4 @@ export function initNav() {
   toTop.addEventListener("click", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
-
-  // Scrollspy
-  const sections = Array.from(document.querySelectorAll("main > section[id]"));
-  const navByHash = new Map();
-  navLinks.querySelectorAll("a[href^='#']").forEach((a) => navByHash.set(a.getAttribute("href"), a));
-
-  // Sections without their own nav link highlight the nearest parent link
-  const alias = { philosophy: "home", outcomes: "expertise" };
-
-  const spy = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        const link = navByHash.get(`#${alias[entry.target.id] || entry.target.id}`);
-        if (!link) return;
-        if (entry.isIntersecting) {
-          navByHash.forEach((l) => l.classList.remove("active"));
-          link.classList.add("active");
-        }
-      });
-    },
-    { rootMargin: "-45% 0px -50% 0px", threshold: 0 }
-  );
-  sections.forEach((s) => spy.observe(s));
 }

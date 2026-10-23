@@ -33,10 +33,13 @@ export function initNav() {
   const navByHash = new Map();
   navLinks.querySelectorAll("a[href^='#']").forEach((a) => navByHash.set(a.getAttribute("href"), a));
 
+  // Sections without their own nav link highlight the nearest parent link
+  const alias = { philosophy: "home", outcomes: "expertise" };
+
   const spy = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
-        const link = navByHash.get(`#${entry.target.id}`);
+        const link = navByHash.get(`#${alias[entry.target.id] || entry.target.id}`);
         if (!link) return;
         if (entry.isIntersecting) {
           navByHash.forEach((l) => l.classList.remove("active"));

@@ -37,10 +37,13 @@ function build() {
   });
 }
 
-export function openLightbox({ image, title, subtitle, linkUrl, linkLabel }) {
+export function openLightbox({ image, title, subtitle, linkUrl, linkLabel, wide, download }) {
   if (!overlay) build();
 
   lastFocused = document.activeElement;
+  overlay.querySelector(".lightbox-box").classList.toggle("wide", !!wide);
+  if (download) linkEl.setAttribute("download", "");
+  else linkEl.removeAttribute("download");
   imageEl.src = image;
   imageEl.alt = title || "";
   titleEl.textContent = title || "";

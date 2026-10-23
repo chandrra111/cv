@@ -1,0 +1,416 @@
+import { openLightbox } from "./lightbox.js";
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) =>
+  String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const EXT = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="12" height="12" aria-hidden="true" style="vertical-align:-1px;margin-left:3px"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`;
+
+const parseISO = (iso) => {
+  const [y, m, d] = iso.split("-").map(Number);
+  return { y, m, d, date: new Date(Date.UTC(y, m - 1, d)) };
+};
+const shortDate = (iso) => {
+  const { m, d } = parseISO(iso);
+  return `${d} ${MONTHS[m - 1].slice(0, 3)}`;
+};
+const monthLabel = (ym) => {
+  const [y, m] = ym.split("-").map(Number);
+  return `${MONTHS[m - 1]} ${y}`;
+};
+const debounce = (fn, ms = 120) => {
+  let t;
+  return (...a) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...a), ms);
+  };
+};
+const tokens = (q) => q.toLowerCase().split(/\s+/).filter(Boolean);
+
+export async function initHub() {
+  try {
+    const [dbx, ai] = await Promise.all([import("../data/databricks.js"), import("../data/ai-tools.js")]);
+    initDatabricks(dbx);
+    initAI(ai);
+  } catch (err) {
+    console.error("Hub failed to load", err);
+    ["dbxList", "aiGrid"].forEach((id) => {
+      const el = $(id);
+      if (el) el.innerHTML = `<div class="empty-note">Couldn't load this section. Please refresh the page.</div>`;
+    });
+  }
+}
+
+/* ============================ DATABRICKS ============================ */
+function initDatabricks({ dbxMonths, dbxThemes, dbxUpdates, dbxInsights, dbxTopics, dbxSources, dbxInfographics }) {
+  const items = dbxUpdates.map(([date, theme, status, title, summary]) => ({ date, theme, status, title, summary, ym: date.slice(0, 7) }));
+  items.sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+
+  const gaCount = items.filter((i) => i.status === "GA").length;
+  $("dbxStats").innerHTML = [
+    [items.length, "curated updates"],
+    [gaCount, "generally available"],
+    [Object.keys(dbxMonths).length, "months covered"],
+    [Object.keys(dbxThemes).length, "themes"],
+  ]
+    .map(([v, l]) => `<div class="stat-tile"><b>${v}</b><span>${l}</span></div>`)
+    .join("");
+
+  const state = { theme: "all", status: "all", month: "all", q: "", shown: 30 };
+  const themeCounts = {};
+  items.forEach((i) => (themeCounts[i.theme] = (themeCounts[i.theme] || 0) + 1));
+
+  const chipBar = $("dbxThemeChips");
+  chipBar.innerHTML =
+    `<button type="button" class="fchip" data-theme="all" aria-pressed="true">All<span class="n">${items.length}</span></button>` +
+    Object.entries(dbxThemes)
+      .map(([k, label]) => `<button type="button" class="fchip" data-theme="${k}" aria-pressed="false">${esc(label)}<span class="n">${themeCounts[k] || 0}</span></button>`)
+      .join("");
+
+  const statuses = [...new Set(items.map((i) => i.status))];
+  $("dbxStatus").innerHTML = `<option value="all">All statuses</option>` + statuses.map((s) => `<option>${esc(s)}</option>`).join("");
+  $("dbxMonth").innerHTML =
+    `<option value="all">All months</option>` +
+    Object.keys(dbxMonths)
+      .sort()
+      .reverse()
+      .map((m) => `<option value="${m}">${monthLabel(m)}</option>`)
+      .join("");
+
+  const statusClass = (s) => "s-" + s.toLowerCase();
+
+  function filtered() {
+    const tk = tokens(state.q);
+    return items.filter(
+      (i) =>
+        (state.theme === "all" || i.theme === state.theme) &&
+        (state.status === "all" || i.status === state.status) &&
+        (state.month === "all" || i.ym === state.month) &&
+        tk.every((t) => (i.title + " " + i.summary).toLowerCase().includes(t))
+    );
+  }
+
+  function render() {
+    const list = filtered();
+    const slice = list.slice(0, state.shown);
+    const monthTotals = {};
+    list.forEach((i) => (monthTotals[i.ym] = (monthTotals[i.ym] || 0) + 1));
+    let html = "";
+    let last = "";
+    slice.forEach((i) => {
+      if (i.ym !== last) {
+        last = i.ym;
+        html += `<li class="upd-month">${monthLabel(i.ym)}<small>${monthTotals[i.ym]} update${monthTotals[i.ym] === 1 ? "" : "s"}</small></li>`;
+      }
+      html += `<li class="upd">
+        <div class="upd-date">${shortDate(i.date)}</div>
+        <div>
+          <div class="upd-meta"><span class="theme-tag">${esc(dbxThemes[i.theme])}</span><span class="status ${statusClass(i.status)}">${esc(i.status)}</span></div>
+          <h4>${esc(i.title)}</h4>
+          <p>${esc(i.summary)}</p>
+          <a href="${dbxMonths[i.ym]}" target="_blank" rel="noopener noreferrer">Official release notes${EXT}</a>
+        </div></li>`;
+    });
+    $("dbxList").innerHTML = html || `<li><div class="empty-note">No updates match those filters. Try clearing the search.</div></li>`;
+    $("dbxCount").textContent = `${list.length} of ${items.length} updates`;
+    $("dbxMore").hidden = list.length <= state.shown;
+  }
+
+  chipBar.addEventListener("click", (e) => {
+    const b = e.target.closest(".fchip");
+    if (!b) return;
+    state.theme = b.dataset.theme;
+    state.shown = 30;
+    chipBar.querySelectorAll(".fchip").forEach((c) => c.setAttribute("aria-pressed", String(c === b)));
+    render();
+  });
+  $("dbxStatus").addEventListener("change", (e) => ((state.status = e.target.value), (state.shown = 30), render()));
+  $("dbxMonth").addEventListener("change", (e) => ((state.month = e.target.value), (state.shown = 30), render()));
+  $("dbxSearch").addEventListener("input", debounce((e) => ((state.q = e.target.value.trim()), (state.shown = 30), render())));
+  $("dbxMore").querySelector("button").addEventListener("click", () => ((state.shown += 30), render()));
+  render();
+
+  // Takeaways
+  $("dbxInsights").innerHTML = dbxInsights
+    .map((t, i) => `<article class="card insight-card"><div class="num">0${i + 1}</div><h3>${esc(t.title)}</h3><p>${esc(t.body)}</p></article>`)
+    .join("");
+
+  // Infographics
+  $("dbxInfo").innerHTML = dbxInfographics
+    .map(
+      (g) => `<figure class="card info-card">
+        <button type="button" class="thumb" data-id="${g.id}" aria-label="View ${esc(g.title)} full size">
+          <img src="${g.file}.svg" width="1200" height="675" loading="lazy" alt="Infographic: ${esc(g.title)}">
+        </button>
+        <figcaption>
+          <strong>${esc(g.title)}</strong>
+          <p>${esc(g.caption)}</p>
+          <div class="info-links"><a href="${g.file}.png" download>Download PNG</a><a href="${g.file}.svg" target="_blank" rel="noopener">Open SVG</a></div>
+        </figcaption></figure>`
+    )
+    .join("");
+  $("dbxInfo").addEventListener("click", (e) => {
+    const b = e.target.closest("button.thumb");
+    if (!b) return;
+    const g = dbxInfographics.find((x) => x.id === b.dataset.id);
+    openLightbox({ image: g.file + ".svg", title: g.title, subtitle: esc(g.caption), linkUrl: g.file + ".png", linkLabel: "Download PNG", wide: true, download: true });
+  });
+
+  // Topics
+  $("dbxTopics").innerHTML = dbxTopics
+    .map((t) => `<article class="card topic-card"><div class="area">${esc(t.area)}</div><h3>${esc(t.title)}</h3><p>${esc(t.body)}</p><div class="from">Topic seen in: ${esc(t.from)}</div></article>`)
+    .join("");
+
+  // Sources
+  $("dbxSources").innerHTML =
+    `<li>Databricks platform release notes — ` +
+    Object.keys(dbxMonths)
+      .map((m) => `<a href="${dbxMonths[m]}" target="_blank" rel="noopener noreferrer">${monthLabel(m)}</a>`)
+      .join(" · ") +
+    `</li>` +
+    dbxSources.map((s) => `<li>Reading list: <a href="${s.url}" target="_blank" rel="noopener noreferrer">${esc(s.name)}</a></li>`).join("");
+}
+
+/* ================================ AI ================================ */
+const STOP = new Set(
+  ("a an and are as at be by can for from get gets has have in into is it its just let lets like make makes more new no not of on one or out over per so that the their them then this to turn turns up use used uses using via what when which who will with within without you your yours about across after all also any app apps based before being between both but each every few how if instead may much other our own same several should some such than there these they those through too very was we were while ai tool tools work works helps help gives give built build builds lets one two three plus ready full real own way ways every most many without both single show shows see sees keep keeps find finds ask asks answer answers").split(
+    /\s+/
+  )
+);
+
+function initAI({ aiCategories, aiTools, aiIssues, aiPicks }) {
+  const tools = aiTools.map((t, i) => {
+    const words = new Set((t.d.toLowerCase().match(/[a-z][a-z-]{2,}/g) || []).filter((w) => !STOP.has(w)));
+    return { ...t, i, words, hay: (t.n + " " + t.d).toLowerCase() };
+  });
+  const byName = new Map(tools.map((t) => [t.n.toLowerCase(), t]));
+  const catCounts = {};
+  tools.forEach((t) => (catCounts[t.c] = (catCounts[t.c] || 0) + 1));
+  const ossCount = tools.filter((t) => t.o).length;
+  const recentCount = tools.filter((t) => t.t).length;
+  const linkedCount = tools.filter((t) => t.u || t.g).length;
+
+  $("aiStats").innerHTML = [
+    [tools.length, "tools indexed"],
+    [Object.keys(aiCategories).length, "categories"],
+    [ossCount, "open source"],
+    [aiIssues.length, "daily issues tracked"],
+  ]
+    .map(([v, l]) => `<div class="stat-tile"><b>${v}</b><span>${l}</span></div>`)
+    .join("");
+
+  const state = { cat: "all", q: "", oss: false, recent: false, linked: false, sort: "az", shown: 24 };
+
+  const catBar = $("aiCats");
+  catBar.innerHTML =
+    `<button type="button" class="fchip" data-cat="all" aria-pressed="true">All<span class="n">${tools.length}</span></button>` +
+    Object.entries(aiCategories)
+      .map(([k, l]) => `<button type="button" class="fchip" data-cat="${k}" aria-pressed="false">${esc(l)}<span class="n">${catCounts[k] || 0}</span></button>`)
+      .join("");
+
+  $("aiOss").insertAdjacentHTML("beforeend", `<span class="n">${ossCount}</span>`);
+  $("aiRecent").insertAdjacentHTML("beforeend", `<span class="n">${recentCount}</span>`);
+  $("aiLinked").insertAdjacentHTML("beforeend", `<span class="n">${linkedCount}</span>`);
+
+  function score(t, tk) {
+    let s = 0;
+    const name = t.n.toLowerCase();
+    tk.forEach((x) => {
+      if (name === x) s += 6;
+      else if (name.startsWith(x)) s += 4;
+      else if (name.includes(x)) s += 3;
+      else s += 1;
+    });
+    return s;
+  }
+
+  function filtered() {
+    const tk = tokens(state.q);
+    let list = tools.filter(
+      (t) =>
+        (state.cat === "all" || t.c === state.cat) &&
+        (!state.oss || t.o) &&
+        (!state.recent || t.t) &&
+        (!state.linked || t.u || t.g) &&
+        tk.every((x) => t.hay.includes(x))
+    );
+    if (tk.length) list.sort((a, b) => score(b, tk) - score(a, tk) || a.n.localeCompare(b.n));
+    else if (state.sort === "new")
+      list.sort((a, b) => (b.t ? b.t[0] : "").localeCompare(a.t ? a.t[0] : "") || a.n.localeCompare(b.n, "en", { sensitivity: "base" }));
+    return list;
+  }
+
+  const searchUrl = (n) => `https://duckduckgo.com/?q=${encodeURIComponent(n + " AI tool")}`;
+
+  function cardHTML(t) {
+    const links = [];
+    if (t.u) links.push(`<a href="${t.u}" target="_blank" rel="noopener noreferrer nofollow">Visit${EXT}</a>`);
+    if (t.g) links.push(`<a href="${t.g}" target="_blank" rel="noopener noreferrer nofollow">GitHub${EXT}</a>`);
+    if (!t.u && !t.g) links.push(`<a href="${searchUrl(t.n)}" target="_blank" rel="noopener noreferrer nofollow">Search the web${EXT}</a>`);
+    const badges = [
+      t.o ? `<span class="badge-mini b-oss">Open source</span>` : "",
+      t.t ? `<span class="badge-mini b-new">October issue</span>` : "",
+      t.p ? `<span class="badge-mini b-promo">Sponsored in newsletter</span>` : "",
+    ].join("");
+    return `<article class="card tool-card" data-i="${t.i}">
+      <header><h4>${esc(t.n)}</h4><span class="cat-tag">${esc(aiCategories[t.c])}</span></header>
+      <p>${esc(t.d)}</p>
+      ${badges ? `<div class="tool-badges">${badges}</div>` : ""}
+      <div class="tool-actions">${links.join("")}<button type="button" class="insight-btn" aria-expanded="false">Insights</button></div>
+      <div class="tool-insight" hidden></div></article>`;
+  }
+
+  function render() {
+    const list = filtered();
+    $("aiGrid").innerHTML = list.slice(0, state.shown).map(cardHTML).join("") || `<div class="empty-note" style="grid-column:1/-1">No tools match. Try fewer words, or clear a filter.</div>`;
+    $("aiCount").textContent = `${list.length} of ${tools.length} tools`;
+    $("aiMore").hidden = list.length <= state.shown;
+  }
+
+  const reset = () => (state.shown = 24);
+  catBar.addEventListener("click", (e) => {
+    const b = e.target.closest(".fchip");
+    if (!b) return;
+    state.cat = b.dataset.cat;
+    reset();
+    catBar.querySelectorAll(".fchip").forEach((c) => c.setAttribute("aria-pressed", String(c === b)));
+    render();
+  });
+  [["aiOss", "oss"], ["aiRecent", "recent"], ["aiLinked", "linked"]].forEach(([id, key]) => {
+    $(id).addEventListener("click", () => {
+      state[key] = !state[key];
+      $(id).setAttribute("aria-pressed", String(state[key]));
+      reset();
+      render();
+    });
+  });
+  $("aiSort").addEventListener("change", (e) => ((state.sort = e.target.value), reset(), render()));
+  $("aiSearch").addEventListener("input", debounce((e) => ((state.q = e.target.value.trim()), reset(), render())));
+  $("aiMore").querySelector("button").addEventListener("click", () => ((state.shown += 24), render()));
+
+  function setSearch(text) {
+    $("aiSearch").value = text;
+    state.q = text;
+    reset();
+    document.querySelector('#aiTabs [data-tab="explore"]').click();
+    render();
+    $("aiSearch").focus({ preventScroll: true });
+    $("ai").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function related(t) {
+    return tools
+      .filter((o) => o.i !== t.i && o.c === t.c)
+      .map((o) => ({ o, s: [...t.words].filter((w) => o.words.has(w)).length }))
+      .filter((x) => x.s > 0)
+      .sort((a, b) => b.s - a.s || a.o.n.localeCompare(b.o.n))
+      .slice(0, 4)
+      .map((x) => x.o);
+  }
+
+  $("aiGrid").addEventListener("click", (e) => {
+    const btn = e.target.closest(".insight-btn");
+    if (btn) {
+      const card = btn.closest(".tool-card");
+      const box = card.querySelector(".tool-insight");
+      const t = tools[Number(card.dataset.i)];
+      const open = btn.getAttribute("aria-expanded") === "true";
+      if (!open && !box.dataset.built) {
+        const kws = [...t.words].slice(0, 6);
+        const rel = related(t);
+        box.innerHTML =
+          `<h5>Key themes</h5><div class="row">${kws.map((k) => `<button type="button" class="mini-chip" data-q="${esc(k)}">${esc(k)}</button>`).join("") || "<span>No themes detected.</span>"}</div>` +
+          `<h5>Similar tools in ${esc(aiCategories[t.c])}</h5><div class="row">${rel.map((r) => `<button type="button" class="mini-chip" data-q="${esc(r.n)}">${esc(r.n)}</button>`).join("") || "<span>No close matches.</span>"}</div>` +
+          (t.t ? `<h5>Seen in</h5><div class="row"><span>${t.t.map(shortDate).join(", ")} issues</span></div>` : "") +
+          `<div class="row"><span>Check pricing and data terms before using any tool with company data.</span></div>`;
+        box.dataset.built = "1";
+      }
+      box.hidden = open;
+      btn.setAttribute("aria-expanded", String(!open));
+      btn.textContent = open ? "Insights" : "Hide insights";
+      return;
+    }
+    const chip = e.target.closest(".mini-chip");
+    if (chip) setSearch(chip.dataset.q);
+  });
+
+  render();
+
+  /* ---------- Insights panel ---------- */
+  const kwCount = {};
+  tools.forEach((t) => t.words.forEach((w) => (kwCount[w] = (kwCount[w] || 0) + 1)));
+  const topKw = Object.entries(kwCount).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 18);
+  const maxCat = Math.max(...Object.values(catCounts));
+  const catsSorted = Object.entries(catCounts).sort((a, b) => b[1] - a[1]);
+  const pct = (n) => Math.round((n / tools.length) * 100);
+  const [topCat, topCatN] = catsSorted[0];
+  const [lowCat, lowCatN] = catsSorted[catsSorted.length - 1];
+
+  $("aiInsights").innerHTML = `
+    <div class="insight-cols">
+      <div class="card panel-card">
+        <h3>Where the tools cluster</h3>
+        <p class="sub">Tools per category — select one to explore it.</p>
+        ${catsSorted
+          .map(
+            ([k, n]) => `<div class="bar-row"><button type="button" data-cat="${k}">${esc(aiCategories[k])}</button><div class="bar-track"><div class="bar-fill" style="width:${(n / maxCat) * 100}%"></div></div><div class="v">${n}</div></div>`
+          )
+          .join("")}
+        <h3 style="margin-top:30px">What the tools are trying to do</h3>
+        <p class="sub">Most frequent themes across all descriptions — select one to search.</p>
+        <div class="kw-cloud">${topKw.map(([w, n]) => `<button type="button" class="kw" data-q="${esc(w)}">${esc(w)}<small>${n}</small></button>`).join("")}</div>
+      </div>
+      <div class="card panel-card">
+        <h3>Reading the index</h3>
+        <div class="fact-list">
+          <p><b>${esc(aiCategories[topCat])}</b> is the largest category with ${topCatN} tools (${pct(topCatN)}%); <b>${esc(aiCategories[lowCat])}</b> is the smallest at ${lowCatN} (${pct(lowCatN)}%).</p>
+          <p>Only <b>${ossCount}</b> tools (${pct(ossCount)}%) are open source, so most of this market is commercial and priced per seat or by usage.</p>
+          <p><b>${recentCount}</b> tools appeared in the ${aiIssues.length} October issues tracked; ${linkedCount} have a direct link here.</p>
+        </div>
+        <h3 style="margin-top:28px">Before you adopt a tool</h3>
+        <ul class="check-list">
+          <li>Where does your data go, and can you opt out of training on it?</li>
+          <li>Does it support SSO and role-based access for a team rollout?</li>
+          <li>Can you export your work if the vendor changes pricing or disappears?</li>
+          <li>Is the pricing predictable at your usage, not only at the free tier?</li>
+          <li>Who owns the output, and does your policy allow it for client work?</li>
+        </ul>
+      </div>
+    </div>`;
+  $("aiInsights").addEventListener("click", (e) => {
+    const c = e.target.closest("[data-cat]");
+    if (c) {
+      catBar.querySelector(`[data-cat="${c.dataset.cat}"]`).click();
+      document.querySelector('#aiTabs [data-tab="explore"]').click();
+      $("ai").scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    const k = e.target.closest("[data-q]");
+    if (k) setSearch(k.dataset.q);
+  });
+
+  /* ---------- Shortlist ---------- */
+  $("aiShortlist").innerHTML = aiPicks
+    .map((p) => {
+      const t = byName.get(p.name.toLowerCase());
+      const link = t && (t.u || t.g);
+      return `<article class="card pick-card"><h3>${esc(p.name)}</h3><p>${esc(p.why)}</p>${link ? `<a href="${link}" target="_blank" rel="noopener noreferrer nofollow">Visit${EXT}</a>` : t ? `<a href="${searchUrl(t.n)}" target="_blank" rel="noopener noreferrer nofollow">Search the web${EXT}</a>` : ""}</article>`;
+    })
+    .join("");
+
+  /* ---------- Daily issues ---------- */
+  $("aiIssues").innerHTML = [...aiIssues]
+    .sort((a, b) => b.d.localeCompare(a.d))
+    .map((i) => {
+      const { m, d, date } = parseISO(i.d);
+      return `<div class="card issue"><div class="d">${d} ${MONTHS[m - 1].slice(0, 3)}<small>${DAYS[date.getUTCDay()]} · ${i.t.length} tools</small></div>
+        <div class="tools">${i.t.map((n) => `<button type="button" class="mini-chip" data-q="${esc(n)}">${esc(n)}</button>`).join("")}</div>
+        <a href="${i.u}" target="_blank" rel="noopener noreferrer">Read the issue${EXT}</a></div>`;
+    })
+    .join("");
+  $("aiIssues").addEventListener("click", (e) => {
+    const c = e.target.closest("[data-q]");
+    if (c) setSearch(c.dataset.q);
+  });
+}

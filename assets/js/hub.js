@@ -21,6 +21,7 @@ const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-mo
 function runCount(el) {
   const to = Number(el.dataset.n);
   if (reduceMotion) return void (el.textContent = to);
+  el.textContent = 0;
   const t0 = performance.now();
   const tick = (t) => {
     const k = Math.min(1, (t - t0) / 1000);
@@ -35,7 +36,7 @@ const countIO =
     : null;
 function statTiles(el, pairs) {
   el.innerHTML = pairs.map(([v, l]) => `<div class="stat-tile"><b data-n="${v}">${v}</b><span>${l}</span></div>`).join("");
-  if (countIO) el.querySelectorAll("b").forEach((b) => ((b.textContent = "0"), countIO.observe(b)));
+  if (countIO) el.querySelectorAll("b").forEach((b) => countIO.observe(b));
 }
 function marquee(el, names) {
   const row = names.map((n) => `<span>${esc(n)}</span>`).join("");

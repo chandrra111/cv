@@ -67,11 +67,84 @@ function wireHero() {
   });
 }
 
+/* ---------- sharing helpers ---------- */
+const SITE = "https://balachandra-srinevasalu.com/";
+const STATUS_NOTE = {
+  GA: "Generally available.",
+  Beta: "Beta: pilot it on non-critical work first.",
+  Preview: "Preview: check limits in the official docs before relying on it.",
+  Frontier: "Limited early access: not for general use yet.",
+  Retiring: "Retirement: plan your move before it stops working.",
+};
+const TAGS = {
+  dbx: { base: ["Databricks", "DataEngineering"], ai: ["GenAI", "AIAgents"], gov: ["UnityCatalog", "DataGovernance"], eng: ["Lakeflow", "DataPipelines"], share: ["DeltaLake", "OpenData"], bi: ["PowerBI", "Analytics"], plat: ["Serverless", "CloudData"] },
+  bi: { base: ["PowerBI", "MicrosoftFabric"], ai: ["Copilot", "AI"], report: ["DataViz", "Reporting"], model: ["DAX", "SemanticModel"], gov: ["DataGovernance", "Analytics"], dev: ["DataOps", "PBIP"], conn: ["BusinessIntelligence", "Analytics"] },
+};
+
+function toast(msg) {
+  let t = document.getElementById("toast");
+  if (!t) {
+    t = document.createElement("div");
+    t.id = "toast";
+    t.className = "toast";
+    t.setAttribute("role", "status");
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+  } catch (e) {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.cssText = "position:fixed;opacity:0";
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+      document.execCommand("copy");
+    } catch (err) {
+      /* ignore */
+    }
+    ta.remove();
+  }
+  toast("Copied. Paste it into your LinkedIn post.");
+}
+
+/* A LinkedIn-ready post in the "hook, what's new, heads-up, why it matters, source" shape. */
+function updatePost({ item, story, feed }) {
+  const lines = [`🚀 ${story ? story.hook : item.title}`, ""];
+  if (story) story.bullets.forEach((b) => lines.push(`✅ ${b}`));
+  else lines.push(item.summary);
+  const note = story && story.watch ? story.watch : STATUS_NOTE[item.status];
+  if (item.status !== "GA" || (story && story.watch)) lines.push(`⚠️ ${note}`);
+  if (story) lines.push("", `💡 Why it matters: ${story.why}`);
+  lines.push("", `Source: ${item.url}`, `More updates, summarised in plain language: ${SITE}#${feed.hash}`);
+  const tags = [...TAGS[feed.p === "dbx" ? "dbx" : "bi"].base, ...(TAGS[feed.p === "dbx" ? "dbx" : "bi"][item.theme] || [])];
+  lines.push("", tags.map((t) => "#" + t).join(" "));
+  return lines.join("\n");
+}
+
+function toolPost(t, categoryLabel, similar) {
+  const lines = [`🧰 AI tool spotlight: ${t.n}`, "", t.d, "", `✅ Category: ${categoryLabel}`];
+  if (t.o) lines.push("✅ Open source");
+  if (similar.length) lines.push(`✅ Similar tools: ${similar.map((s) => s.n).join(", ")}`);
+  lines.push("⚠️ Check pricing, data terms and security before using any tool with company data.");
+  lines.push("", `Browse the full searchable AI tools index: ${SITE}#ai`, "", "#AI #AITools #GenerativeAI #Productivity");
+  return lines.join("\n");
+}
+
 export async function initHub() {
   try {
-    const [dbx, bi, ai] = await Promise.all([import("../data/databricks.js"), import("../data/bi.js"), import("../data/ai-tools.js")]);
+    const [dbx, bi, ai, st] = await Promise.all([import("../data/databricks.js"), import("../data/bi.js"), import("../data/ai-tools.js"), import("../data/stories.js")]);
     initFeed({
       p: "dbx",
+      hash: "data",
+      stories: st.dbxStories,
       themes: dbx.dbxThemes,
       rows: dbx.dbxUpdates.map(([theme, status, title, summary, url]) => ({ theme, status, title, summary, url })),
       linkLabel: "Official release notes",
@@ -85,6 +158,8 @@ export async function initHub() {
     });
     initFeed({
       p: "bi",
+      hash: "bi",
+      stories: st.biStories,
       themes: bi.biThemes,
       rows: bi.biUpdates.map(([theme, status, title, summary, src]) => ({ theme, status, title, summary, url: bi.biSources[src] })),
       linkLabel: "Official docs",
@@ -110,7 +185,7 @@ export async function initHub() {
 }
 
 /* ===================== Release digests (Databricks, Power BI) ===================== */
-function initFeed({ p, themes, rows, linkLabel, insights, topics, infographics, sources }) {
+function initFeed({ p, hash, stories, themes, rows, linkLabel, insights, topics, infographics, sources }) {
   const id = (s) => $(p + s);
   const items = rows;
   const gaCount = items.filter((i) => i.status === "GA").length;
@@ -127,16 +202,35 @@ function initFeed({ p, themes, rows, linkLabel, insights, topics, infographics, 
   const colorOf = {};
   Object.keys(themes).forEach((k, n) => (colorOf[k] = PALETTE[n % PALETTE.length]));
 
-  const spot = [];
-  Object.keys(themes).forEach((k) => {
-    const hit = items.find((i) => i.theme === k && i.status === "GA");
-    if (hit && spot.length < 3) spot.push(hit);
+  /* ---------- Top stories: editorial briefs ---------- */
+  const feed = { p, hash };
+  const storyCards = stories
+    .map((s) => ({ s, item: items.find((i) => i.title === s.title) }))
+    .filter((x) => x.item);
+  id("Stories").innerHTML = storyCards
+    .map(({ s, item }, n) => {
+      const warn = s.watch || (item.status !== "GA" ? STATUS_NOTE[item.status] : "");
+      return `<article class="story${n === 0 ? " lead" : ""}" style="--c:${colorOf[item.theme]}" data-story="${n}">
+        <div class="story-meta"><span class="theme-tag">${esc(themes[item.theme])}</span><span class="status s-${item.status.toLowerCase()}">${esc(item.status)}</span></div>
+        <h3>${esc(s.hook)}</h3>
+        <p class="story-title">${esc(item.title)}</p>
+        <ul class="story-list">${s.bullets.map((b) => `<li>${esc(b)}</li>`).join("")}</ul>
+        ${warn ? `<p class="story-warn"><b>Heads-up.</b> ${esc(warn)}</p>` : ""}
+        <p class="story-why"><b>Why it matters.</b> ${esc(s.why)}</p>
+        <div class="story-who">${s.who.map((w) => `<span>${esc(w)}</span>`).join("")}</div>
+        <div class="story-actions">
+          <a href="${item.url}" target="_blank" rel="noopener noreferrer">${linkLabel}${EXT}</a>
+          <button type="button" data-copy-story="${n}">Copy as LinkedIn post</button>
+        </div>
+      </article>`;
+    })
+    .join("");
+  id("Stories").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-copy-story]");
+    if (!b) return;
+    const { s, item } = storyCards[Number(b.dataset.copyStory)];
+    copyText(updatePost({ item, story: s, feed }));
   });
-  id("Spot").innerHTML = `<div class="spot-head"><h3>Spotlight</h3><span>Generally available and worth knowing</span></div><div class="spot-grid">${spot
-    .map(
-      (i) => `<a class="spot-card" style="--c:${colorOf[i.theme]}" href="${i.url}" target="_blank" rel="noopener noreferrer"><span class="theme-tag">${esc(themes[i.theme])}</span><h4>${esc(i.title)}</h4><p>${esc(i.summary)}</p><em>${linkLabel}${EXT}</em></a>`
-    )
-    .join("")}</div>`;
 
   const state = { theme: "all", status: "all", q: "", shown: 30 };
   const themeCounts = {};
@@ -172,11 +266,11 @@ function initFeed({ p, themes, rows, linkLabel, insights, topics, infographics, 
           <div class="upd-meta"><span class="theme-tag">${esc(themes[i.theme])}</span><span class="status s-${i.status.toLowerCase()}">${esc(i.status)}</span></div>
           <h4>${esc(i.title)}</h4>
           <p>${esc(i.summary)}</p>
-          <a href="${i.url}" target="_blank" rel="noopener noreferrer">${linkLabel}${EXT}</a></li>`
+          ${i.status !== "GA" && STATUS_NOTE[i.status] ? `<p class="upd-note">${esc(STATUS_NOTE[i.status])}</p>` : ""}
+          <div class="upd-actions"><a href="${i.url}" target="_blank" rel="noopener noreferrer">${linkLabel}${EXT}</a><button type="button" data-copy-row="${items.indexOf(i)}">Copy as LinkedIn post</button></div></li>`
         )
         .join("") || `<li><div class="empty-note">No updates match those filters. Try clearing the search.</div></li>`;
     id("Count").textContent = `${list.length} of ${items.length} updates`;
-    id("Spot").hidden = state.theme !== "all" || state.status !== "all" || !!state.q;
     id("More").hidden = list.length <= state.shown;
   }
 
@@ -187,6 +281,13 @@ function initFeed({ p, themes, rows, linkLabel, insights, topics, infographics, 
     state.shown = 30;
     chipBar.querySelectorAll(".fchip").forEach((c) => c.setAttribute("aria-pressed", String(c === b)));
     render();
+  });
+  id("List").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-copy-row]");
+    if (!b) return;
+    const item = items[Number(b.dataset.copyRow)];
+    const s = stories.find((x) => x.title === item.title);
+    copyText(updatePost({ item, story: s, feed }));
   });
   id("Status").addEventListener("change", (e) => ((state.status = e.target.value), (state.shown = 30), render()));
   id("Search").addEventListener("input", debounce((e) => ((state.q = e.target.value.trim()), (state.shown = 30), render())));
@@ -232,6 +333,15 @@ const STOP = new Set(
     /\s+/
   )
 );
+
+const BEST_FOR = {
+  build: "Developers, makers and product teams",
+  agents: "Teams automating work with assistants and agents",
+  growth: "Sales, marketing and growth teams",
+  ops: "Finance, operations and reporting teams",
+  know: "Students, researchers and knowledge workers",
+  media: "Creators, designers and content teams",
+};
 
 function initAI({ aiCategories, aiTools, aiPicks }) {
   const tools = aiTools.map((t, i) => {
@@ -374,14 +484,22 @@ function initAI({ aiCategories, aiTools, aiPicks }) {
         const kws = [...t.words].slice(0, 6);
         const rel = related(t);
         box.innerHTML =
+          `<h5>Best for</h5><div class="row"><span>${esc(BEST_FOR[t.c])}</span></div>` +
           `<h5>Key themes</h5><div class="row">${kws.map((k) => `<button type="button" class="mini-chip" data-q="${esc(k)}">${esc(k)}</button>`).join("") || "<span>No themes detected.</span>"}</div>` +
           `<h5>Similar tools in ${esc(aiCategories[t.c])}</h5><div class="row">${rel.map((r) => `<button type="button" class="mini-chip" data-q="${esc(r.n)}">${esc(r.n)}</button>`).join("") || "<span>No close matches.</span>"}</div>` +
-          `<div class="row"><span>Check pricing and data terms before using any tool with company data.</span></div>`;
+          `<div class="row"><span class="story-warn inline"><b>Heads-up.</b> Check pricing and data terms before using any tool with company data.</span></div>` +
+          `<div class="row"><button type="button" class="copy-post">Copy as LinkedIn post</button></div>`;
         box.dataset.built = "1";
       }
       box.hidden = open;
       btn.setAttribute("aria-expanded", String(!open));
       btn.textContent = open ? "Insights" : "Hide insights";
+      return;
+    }
+    const cp = e.target.closest(".copy-post");
+    if (cp) {
+      const t = tools[Number(cp.closest(".tool-card").dataset.i)];
+      copyText(toolPost(t, aiCategories[t.c], related(t).slice(0, 3)));
       return;
     }
     const chip = e.target.closest(".mini-chip");

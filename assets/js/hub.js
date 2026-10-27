@@ -225,6 +225,32 @@ function initFeed({ p, hash, stories, themes, rows, linkLabel, insights, topics,
       </article>`;
     })
     .join("");
+  /* ---------- Spotlight strip above the full list ---------- */
+  const spot = [];
+  storyCards.forEach(({ s, item }) => {
+    if (item.status === "GA" && spot.length < 3 && !spot.some((x) => x.item.theme === item.theme)) spot.push({ s, item });
+  });
+  Object.keys(themes).forEach((k) => {
+    const hit = items.find((i) => i.theme === k && i.status === "GA");
+    if (hit && spot.length < 3 && !spot.some((x) => x.item.theme === k)) spot.push({ s: stories.find((x) => x.title === hit.title), item: hit });
+  });
+  id("Spot").innerHTML = `<div class="spot-head"><h3>Spotlight</h3><span>Generally available and worth knowing</span></div><div class="spot-grid">${spot
+    .map(
+      ({ s, item }, n) => `<article class="spot-card" style="--c:${colorOf[item.theme]}">
+        <span class="theme-tag">${esc(themes[item.theme])}</span>
+        <h4>${esc(s ? s.hook : item.title)}</h4>
+        <p>${esc(s ? s.bullets[0] : item.summary)}</p>
+        <div class="spot-actions"><a href="${item.url}" target="_blank" rel="noopener noreferrer">${linkLabel}${EXT}</a><button type="button" data-copy-spot="${n}">Copy as LinkedIn post</button></div>
+      </article>`
+    )
+    .join("")}</div>`;
+  id("Spot").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-copy-spot]");
+    if (!b) return;
+    const { s, item } = spot[Number(b.dataset.copySpot)];
+    copyText(updatePost({ item, story: s, feed }));
+  });
+
   id("Stories").addEventListener("click", (e) => {
     const b = e.target.closest("[data-copy-story]");
     if (!b) return;
@@ -271,6 +297,7 @@ function initFeed({ p, hash, stories, themes, rows, linkLabel, insights, topics,
         )
         .join("") || `<li><div class="empty-note">No updates match those filters. Try clearing the search.</div></li>`;
     id("Count").textContent = `${list.length} of ${items.length} updates`;
+    id("Spot").hidden = state.theme !== "all" || state.status !== "all" || !!state.q;
     id("More").hidden = list.length <= state.shown;
   }
 
@@ -573,10 +600,16 @@ function initAI({ aiCategories, aiTools, aiPicks }) {
   /* ---------- Featured strip on the Explore tab ---------- */
   const feat = aiPicks.slice(0, 4).map((p) => ({ p, t: byName.get(p.name.toLowerCase()) })).filter((x) => x.t);
   $("aiFeat").innerHTML = `<div class="spot-head"><h3>Editor’s picks</h3><span>A few worth a look first</span></div><div class="spot-grid four">${feat
-    .map(({ p, t }) => {
+    .map(({ p, t }, n) => {
       const href = t.u || t.g || searchUrl(t.n);
-      return `<a class="spot-card" style="--c:${CAT_COLORS[t.c]}" href="${href}" target="_blank" rel="noopener noreferrer nofollow"><span class="avatar" aria-hidden="true">${initial(t.n)}</span><h4>${esc(t.n)}</h4><p>${esc(p.why)}</p><em>${t.u || t.g ? "Visit" : "Search the web"}${EXT}</em></a>`;
+      return `<article class="spot-card" style="--c:${CAT_COLORS[t.c]}"><span class="avatar" aria-hidden="true">${initial(t.n)}</span><h4>${esc(t.n)}</h4><p>${esc(p.why)}</p><div class="spot-actions"><a href="${href}" target="_blank" rel="noopener noreferrer nofollow">${t.u || t.g ? "Visit" : "Search the web"}${EXT}</a><button type="button" data-copy-feat="${n}">Copy as LinkedIn post</button></div></article>`;
     })
     .join("")}</div>`;
+  $("aiFeat").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-copy-feat]");
+    if (!b) return;
+    const { p, t } = feat[Number(b.dataset.copyFeat)];
+    copyText(toolPost({ ...t, d: p.why }, aiCategories[t.c], related(t).slice(0, 3)));
+  });
   render();
 }

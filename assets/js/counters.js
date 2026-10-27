@@ -2,7 +2,7 @@ function formatValue(val, decimals) {
   return decimals ? val.toFixed(decimals) : Math.round(val).toString();
 }
 
-function animateCounter(el) {
+export function animateCounter(el) {
   const target = parseFloat(el.dataset.value || "0");
   const decimals = parseInt(el.dataset.decimals || "0", 10);
   const prefix = el.dataset.prefix || "";
@@ -18,6 +18,8 @@ function animateCounter(el) {
     if (progress < 1) requestAnimationFrame(tick);
   }
   requestAnimationFrame(tick);
+  // rAF is paused in background tabs; make sure the final value always lands
+  setTimeout(() => (el.textContent = `${prefix}${formatValue(target, decimals)}${suffix}`), duration + 250);
 }
 
 export function initCounters() {

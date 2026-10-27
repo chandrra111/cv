@@ -29,6 +29,7 @@ function runCount(el) {
     if (k < 1) requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
+  setTimeout(() => (el.textContent = to), 1250);
 }
 const countIO =
   "IntersectionObserver" in window

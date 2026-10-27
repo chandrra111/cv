@@ -283,7 +283,7 @@ function renderCertifications() {
           ${c.issuer} &middot; ${c.dateLabel} ${c.date}
           ${c.level ? `<span class="cert-level">${c.level}</span>` : ""}
         </div>
-        ${c.credlyUrl ? `<span class="cert-credly-link" data-credly-url="${c.credlyUrl}">View on Credly<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>` : ""}
+        ${c.credlyUrl || c.verifyUrl ? `<span class="cert-credly-link" data-credly-url="${c.verifyUrl || c.credlyUrl}">${c.verifyLabel || "View on Credly"}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></span>` : ""}
       </div>
     </div>`
     )
@@ -295,11 +295,11 @@ function renderCertifications() {
 
     const open = () =>
       openLightbox({
-        image: c.badgeImage,
+        image: c.certImage || c.badgeImage,
         title: c.name,
-        subtitle: `${c.issuer} &middot; ${c.dateLabel} ${c.date}`,
-        linkUrl: c.credlyUrl,
-        linkLabel: "View on Credly",
+        subtitle: `${c.issuer} &middot; ${c.dateLabel} ${c.date}${c.expires ? " &middot; Valid until " + c.expires : ""}`,
+        linkUrl: c.verifyUrl || c.credlyUrl,
+        linkLabel: c.verifyLabel || "View on Credly",
       });
 
     card.addEventListener("click", open);

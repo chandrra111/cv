@@ -461,6 +461,18 @@ export const speakingAvailability =
 // Microsoft/Credly entries are sourced directly from the Credly badge wallet
 // (profile.credly) — name, dates, and badge images all mirror what's shown there.
 export const certifications = [
+  {
+    name: "Databricks Certified Data Analyst Associate",
+    issuer: "Databricks",
+    level: "Associate",
+    dateLabel: "Issued",
+    date: "Oct 11, 2026",
+    expires: "Oct 11, 2028",
+    verifyUrl: "https://credentials.databricks.com/196858293",
+    verifyLabel: "Verify credential",
+    badgeImage: "assets/img/certs/databricks-data-analyst-badge.png",
+    certImage: "assets/img/certs/databricks-data-analyst-certificate.png",
+  },
   { name: "Professional Certificate in Data Science & Artificial Intelligence", issuer: "IIM Kozhikode (IIMK)", dateLabel: "Issued", date: "2024" },
   { name: "Digital Personal Data Protection Act (DPDP), 2023 — Certificate Course & Examination", issuer: "DPDPA.com", dateLabel: "Issued", date: "2026" },
   { name: "Leadership and Talent Management — NPTEL+ Workshop", issuer: "IIT Roorkee (Dept. of Management Studies)", dateLabel: "Issued", date: "2026" },
@@ -564,3 +576,45 @@ export const awards = [
     body: "Genpact recognition for a 43% project revenue increase and delivery excellence.",
   },
 ];
+
+/* Two ways to read the profile: the same career, emphasised for leadership or architecture roles.
+ * Share a direct link with ?track=architect (or ?track=leader) before the #profile hash. */
+export const lenses = {
+  leader: {
+    label: "Leadership",
+    eyebrow: "Executive Profile · Head of Data & Analytics",
+    title: ["Turning Enterprise Data into ", "Executive Advantage"],
+    tagline:
+      "Data & Analytics Leader with 23 years building the BI Centres of Excellence, cloud/Lakehouse platforms, and governance foundations that let global finance, sales, and operations leaders run on trusted data — not spreadsheets.",
+    cta: { label: "View Transformation Programs", href: "#programs" },
+    stats: heroStats,
+    focus: [
+      { title: "Strategy & roadmap", body: "Owns a 3-year enterprise data and AI roadmap with the MD and CFO, turning business priorities into platform investment." },
+      { title: "Organisation & talent", body: "Leads a 20+ member Data & Analytics organisation plus vendor and partner teams — hiring, coaching and succession." },
+      { title: "Vendor & OEM partnerships", body: "Runs licensing, capacity and roadmap conversations with Microsoft and Databricks and governs the implementation partner." },
+      { title: "Trusted data", body: "Governance, quality and access control through Unity Catalog so executive decisions rest on data people believe." },
+    ],
+  },
+  architect: {
+    label: "Architecture",
+    eyebrow: "Architect Profile · Principal / Enterprise Data Architect",
+    title: ["Architecting the ", "AI‑Ready Lakehouse"],
+    tagline:
+      "Enterprise data architect with 23 years across data warehousing, BI and cloud platforms — now designing governed Databricks and Microsoft Fabric foundations, semantic models and the context layers that make enterprise data usable by AI.",
+    cta: { label: "See Architecture Programs", href: "#programs" },
+    stats: [
+      { value: 23, suffix: "+", label: "Years, Data Warehousing to Lakehouse" },
+      { value: 300, suffix: "+", label: "Power BI Reports Consolidated onto Microsoft Fabric" },
+      { value: 75, suffix: "%", label: "Faster Enterprise Semantic Models (10+ Models)" },
+      { value: 50, suffix: "+", label: "Global Finance Analytics Solutions Architected" },
+      { text: "Lakehouse", label: "Azure Synapse to Databricks Modernization, Governed by Unity Catalog" },
+      { value: 105, prefix: "$", suffix: "K+", label: "Annual Savings from Platform Consolidation" },
+    ],
+    focus: [
+      { title: "Lakehouse architecture", body: "Directs the Azure Synapse to Databricks Lakehouse move — platform patterns, governance model and a simpler estate." },
+      { title: "Semantic modelling & performance", body: "Re-architected enterprise Power BI semantic models serving 200–300 sales teams, about 75% faster, with no period-end throttling." },
+      { title: "Governance by design", body: "Lineage, access control, discovery, metadata and quality built into the platform with Unity Catalog, not bolted on." },
+      { title: "AI-ready foundations", body: "Semantic and context layers for LLM and agent use cases; hands-on build of a Google Cloud app with Claude Code and Gemini." },
+    ],
+  },
+};

@@ -8,6 +8,7 @@ import { initCharts } from "./charts.js";
 import { initContactForm } from "./contact.js";
 import { initHub } from "./hub.js";
 import { initPanes } from "./panes.js";
+import { initLens } from "./lens.js";
 
 function hideLoadingVeil() {
   const veil = document.getElementById("loadingVeil");
@@ -19,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   renderAll();
   initNav();
   initTabs();
+  initLens();
   initHub();
   initPanes();
   initReveal();

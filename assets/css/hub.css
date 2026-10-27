@@ -290,3 +290,24 @@
 }
 
 html { scroll-padding-top: calc(var(--nav-h) + 12px); }
+
+/* --- profile lens switch (Leadership / Architecture) --- */
+.lens-switch {
+  display: inline-flex; align-items: center; gap: 4px; padding: 4px; margin-bottom: 20px;
+  border: 1px solid var(--border); border-radius: 999px; background: var(--surface); box-shadow: var(--shadow-sm); font-size: 13px;
+}
+.lens-switch span { padding: 0 8px 0 14px; color: var(--text-faint); font-weight: 600; }
+.lens-switch button { padding: 8px 18px; border-radius: 999px; font-weight: 700; color: var(--text-muted); transition: all var(--dur-fast) var(--ease); }
+.lens-switch button:hover { color: var(--text); background: var(--surface-2); }
+.lens-switch button[aria-pressed="true"] { background: var(--brand); color: var(--bg); box-shadow: 0 6px 14px rgba(15, 33, 56, 0.25); }
+.lens-focus { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
+.lens-card {
+  position: relative; padding: 22px 22px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm); transition: transform var(--dur-med) var(--ease), box-shadow var(--dur-med) var(--ease);
+}
+.lens-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
+.lens-card .n { font-family: var(--font-display, var(--font-serif)); font-weight: 800; font-size: 1.5rem; color: var(--accent); }
+.lens-card h3 { margin-top: 6px; font-size: 1.02rem; font-weight: 700; }
+.lens-card p { margin-top: 8px; font-size: 14px; line-height: 1.55; color: var(--text-muted); }
+@media (max-width: 1080px) { .lens-focus { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 760px) { .lens-focus { grid-template-columns: 1fr; } }

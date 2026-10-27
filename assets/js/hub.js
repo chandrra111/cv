@@ -39,9 +39,11 @@ function statTiles(el, pairs) {
   el.innerHTML = pairs.map(([v, l]) => `<div class="stat-tile"><b data-n="${v}">${v}</b><span>${l}</span></div>`).join("");
   if (countIO) el.querySelectorAll("b").forEach((b) => countIO.observe(b));
 }
-function marquee(el, names) {
-  const row = names.map((n) => `<span>${esc(n)}</span>`).join("");
-  el.innerHTML = row + row;
+/* Scrolling strip of clickable chips: each one runs a search in its hub. */
+function marquee(el, hubKey, entries) {
+  const chip = (e, dup) =>
+    `<button type="button" class="hh-chip" data-hero-q="${esc(e.q)}" data-hero-p="${hubKey}"${dup ? ' tabindex="-1" aria-hidden="true"' : ""}>${esc(e.label)}</button>`;
+  el.innerHTML = entries.map((e) => chip(e, false)).join("") + entries.map((e) => chip(e, true)).join("");
 }
 const HERO = { ai: { tab: "explore", sec: "ai" }, dbx: { tab: "dbx-updates", sec: "data" }, bi: { tab: "bi-updates", sec: "bi" } };
 function showResults(p, scroll) {
@@ -197,7 +199,14 @@ function initFeed({ p, hash, stories, themes, rows, linkLabel, insights, topics,
     [earlyCount, "in beta or preview"],
     [Object.keys(themes).length, "themes"],
   ]);
-  marquee(id("Marquee"), items.filter((_, i) => i % 3 === 0).slice(0, 24).map((i) => i.title));
+  marquee(
+    id("Marquee"),
+    p,
+    [...stories.map((st) => items.find((i) => i.title === st.title)).filter(Boolean), ...items.filter((i) => i.status === "GA")]
+      .filter((i, n, a) => a.indexOf(i) === n)
+      .slice(0, 24)
+      .map((i) => ({ label: i.title, q: i.title }))
+  );
 
   const colorOf = {};
   Object.keys(themes).forEach((k, n) => (colorOf[k] = PALETTE[n % PALETTE.length]));
@@ -388,7 +397,14 @@ function initAI({ aiCategories, aiTools, aiPicks }) {
     [ossCount, "open source"],
     [linkedCount, "with a direct link"],
   ]);
-  marquee($("aiMarquee"), tools.filter((_, i) => i % 9 === 0).slice(0, 30).map((t) => t.n));
+  marquee(
+    $("aiMarquee"),
+    "ai",
+    tools
+      .filter((t) => t.r && (t.u || t.g))
+      .slice(0, 28)
+      .map((t) => ({ label: t.n, q: t.n }))
+  );
 
   const state = { cat: "all", q: "", oss: false, recent: false, linked: false, sort: "az", shown: 24 };
 

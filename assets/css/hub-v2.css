@@ -306,3 +306,26 @@
   background: rgba(255, 255, 255, 0.92); transition: transform 0.2s ease, background 0.2s ease;
 }
 .spot-actions button:hover { background: #fff; transform: translateY(-2px); }
+
+/* clickable ticker: each chip runs a search */
+.hh-marquee { display: flex; align-items: center; gap: 18px; padding: 16px 0 16px 24px; -webkit-mask-image: none; mask-image: none; }
+.hh-marquee .hh-label {
+  flex-shrink: 0; display: flex; flex-direction: column; gap: 2px; padding: 0; border: 0; border-radius: 0; background: none;
+  font-size: 13px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: #f6d57d;
+}
+.hh-label small { font-size: 11px; font-weight: 600; letter-spacing: 0; text-transform: none; color: #9fb2c6; }
+.hh-viewport { flex: 1; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 3%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 3%, #000 94%, transparent); }
+.hh-chip {
+  flex-shrink: 0; white-space: nowrap; padding: 8px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; color: #e6eef6; cursor: pointer;
+  background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.16); transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.hh-chip:hover, .hh-chip:focus-visible { background: #e0b559; border-color: #e0b559; color: #0f2138; transform: translateY(-2px); }
+.hh-marquee:hover .track, .hh-marquee:focus-within .track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) { .hh-viewport { overflow-x: auto; } }
+@media (max-width: 760px) { .hh-marquee { gap: 12px; padding-left: 16px; } .hh-label small { display: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .hh-chip[aria-hidden="true"] { display: none; }
+  .hh-viewport { scrollbar-width: none; }
+  .hh-viewport::-webkit-scrollbar { display: none; }
+  .hh-marquee .track { width: max-content; }
+}

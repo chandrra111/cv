@@ -180,14 +180,19 @@
 
 
         <div class="tabbar" id="dataTabs" role="tablist" aria-label="Databricks digest views">
-          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="dbx-updates">New features &amp; updates</button>
+          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="dbx-stories">Top stories</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="dbx-updates">All updates</button>
           <button class="tab-btn" role="tab" aria-selected="false" data-tab="dbx-takeaways">Key takeaways</button>
           <button class="tab-btn" role="tab" aria-selected="false" data-tab="dbx-infographics">Infographics</button>
           <button class="tab-btn" role="tab" aria-selected="false" data-tab="dbx-topics">Practitioner topics</button>
         </div>
 
-        <div class="tab-panel active" data-panel="dbx-updates">
-          <div class="spot-wrap" id="dbxSpot" hidden></div>
+        <div class="tab-panel active" data-panel="dbx-stories">
+          <p class="stories-intro">Short briefs on the updates worth your attention: what changed, what to watch for, and why it matters. Each one can be copied as a ready-to-post LinkedIn update.</p>
+          <div class="story-grid" id="dbxStories"></div>
+        </div>
+
+        <div class="tab-panel" data-panel="dbx-updates">
           <div class="hub-toolbar">
             <select class="hub-select" id="dbxStatus" aria-label="Filter by status"></select>
           </div>
@@ -241,14 +246,19 @@
 
 
         <div class="tabbar" id="biTabs" role="tablist" aria-label="Power BI digest views">
-          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="bi-updates">New features &amp; updates</button>
+          <button class="tab-btn active" role="tab" aria-selected="true" data-tab="bi-stories">Top stories</button>
+          <button class="tab-btn" role="tab" aria-selected="false" data-tab="bi-updates">All updates</button>
           <button class="tab-btn" role="tab" aria-selected="false" data-tab="bi-takeaways">Key takeaways</button>
           <button class="tab-btn" role="tab" aria-selected="false" data-tab="bi-infographics">Infographics</button>
           <button class="tab-btn" role="tab" aria-selected="false" data-tab="bi-topics">Practitioner topics</button>
         </div>
 
-        <div class="tab-panel active" data-panel="bi-updates">
-          <div class="spot-wrap" id="biSpot" hidden></div>
+        <div class="tab-panel active" data-panel="bi-stories">
+          <p class="stories-intro">Short briefs on the updates worth your attention: what changed, what to watch for, and why it matters. Each one can be copied as a ready-to-post LinkedIn update.</p>
+          <div class="story-grid" id="biStories"></div>
+        </div>
+
+        <div class="tab-panel" data-panel="bi-updates">
           <div class="hub-toolbar">
             <select class="hub-select" id="biStatus" aria-label="Filter by status"></select>
           </div>

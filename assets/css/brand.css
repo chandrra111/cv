@@ -96,3 +96,14 @@ h1, h2, h3, h4, h5 { font-weight: 700; letter-spacing: -0.02em; }
 /* Safety net: if scripts fail or are stale in a visitor's cache, the loading screen still lifts after a few seconds */
 .loading-veil { animation: veilAway 0.5s ease 3.5s forwards; }
 @keyframes veilAway { to { opacity: 0; visibility: hidden; } }
+
+/* fallbacks so this layer never depends on a stale copy of variables.css */
+:root { --hp-blue: #024ad8; --sky: #4cade9; }
+:root[data-theme="dark"] .btn-primary { background: var(--hp-blue); }
+
+/* --- get in touch card --- */
+.reach-card { padding: 36px; display: flex; flex-direction: column; justify-content: center; gap: 4px; border-top: 4px solid var(--hp-blue); }
+.reach-card h3 { margin-top: 10px; font-size: clamp(1.4rem, 2.4vw, 1.8rem); line-height: 1.2; }
+.reach-card p { margin-top: 12px; font-size: 1.02rem; line-height: 1.6; color: var(--text-muted); }
+.reach-card .eyebrow { color: var(--hp-blue); }
+.reach-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }

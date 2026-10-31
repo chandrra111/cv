@@ -1,5 +1,5 @@
-import { lenses } from "./data.js";
-import { animateCounter } from "./counters.js";
+import { lenses } from "./data.js?v=20261101b";
+import { animateCounter } from "./counters.js?v=20261101b";
 
 const KEY = "profile-lens";
 const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));

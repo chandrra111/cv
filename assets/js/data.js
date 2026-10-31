@@ -12,7 +12,6 @@ export const profile = {
   summary:
     "23 years turning enterprise data into a strategic asset for the C-suite — building the BI Centres of Excellence, cloud/Lakehouse platforms, and governance foundations that let global finance, sales, and operations leaders run their business on trusted data.",
   email: "balachandra.srinevasalu@gmail.com",
-  phone: "+91-9740966006",
   linkedin: "https://www.linkedin.com/in/chandrra/",
   github: "https://github.com/chandrra111",
   credly: "https://www.credly.com/users/balachandra-srinevasalu.ada06a05",

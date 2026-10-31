@@ -1,12 +1,11 @@
-import { initTheme } from "./theme.js";
-import { initNav } from "./nav.js";
-import { initTabs } from "./tabs.js";
-import { renderAll } from "./render.js";
-import { initReveal } from "./reveal.js";
-import { initCounters } from "./counters.js";
-import { initCharts } from "./charts.js";
-import { initContactForm } from "./contact.js";
-import { initLens } from "./lens.js";
+import { initTheme } from "./theme.js?v=20261101b";
+import { initNav } from "./nav.js?v=20261101b";
+import { initTabs } from "./tabs.js?v=20261101b";
+import { renderAll } from "./render.js?v=20261101b";
+import { initReveal } from "./reveal.js?v=20261101b";
+import { initCounters } from "./counters.js?v=20261101b";
+import { initCharts } from "./charts.js?v=20261101b";
+import { initLens } from "./lens.js?v=20261101b";
 
 function hideLoadingVeil() {
   const veil = document.getElementById("loadingVeil");
@@ -22,6 +21,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initReveal();
   initCounters();
   initCharts();
-  initContactForm();
   requestAnimationFrame(() => setTimeout(hideLoadingVeil, 150));
 });

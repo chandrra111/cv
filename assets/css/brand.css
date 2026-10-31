@@ -92,3 +92,7 @@ h1, h2, h3, h4, h5 { font-weight: 700; letter-spacing: -0.02em; }
 /* --- footer note --- */
 .footer-fine { margin-top: 8px; font-size: 12px; opacity: 0.7; }
 .footer-links-text a { color: var(--accent-2); font-weight: 600; }
+
+/* Safety net: if scripts fail or are stale in a visitor's cache, the loading screen still lifts after a few seconds */
+.loading-veil { animation: veilAway 0.5s ease 3.5s forwards; }
+@keyframes veilAway { to { opacity: 0; visibility: hidden; } }

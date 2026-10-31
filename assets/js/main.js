@@ -6,8 +6,6 @@ import { initReveal } from "./reveal.js";
 import { initCounters } from "./counters.js";
 import { initCharts } from "./charts.js";
 import { initContactForm } from "./contact.js";
-import { initHub } from "./hub.js";
-import { initPanes } from "./panes.js";
 import { initLens } from "./lens.js";
 
 function hideLoadingVeil() {
@@ -21,8 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initTabs();
   initLens();
-  initHub();
-  initPanes();
   initReveal();
   initCounters();
   initCharts();

@@ -12,8 +12,8 @@ function waitForChart(retries = 20) {
 }
 
 function buildCharts(Chart) {
-  const goldish = "#c9a24b";
-  const teal = "#38b6cc";
+  const goldish = "#ffd24d";
+  const teal = "#4cade9";
   const gridColor = "rgba(255,255,255,0.06)";
   const textColor = "#a9b6c4";
 

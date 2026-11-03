@@ -446,8 +446,13 @@ export const speaking = [
     images: [
       {
         src: "assets/img/recognition/power-bi-workshop-singapore-2019.jpg",
-        caption: "Singapore · June 2019",
+        caption: "Singapore",
         alt: "Microsoft Power BI workshop with the Finance team in Singapore, 17th to 19th June 2019",
+      },
+      {
+        src: "assets/img/recognition/power-bi-training-malaysia-2019.jpg",
+        caption: "Malaysia",
+        alt: "Power BI training with the Finance team in Malaysia, 2019",
       },
     ],
   },

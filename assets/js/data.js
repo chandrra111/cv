@@ -439,6 +439,26 @@ export const speaking = [
     imageAlt: "Balachandra Srinevasalu speaking at Data Engineering Summit 2026, Bengaluru",
   },
   {
+    title: "Speaker — Databricks Executive Forum",
+    period: "Conference talk",
+    body:
+      "Presented Pidilite's Data & AI journey, From Warehouse to Lakehouse: building a unified, governed foundation for BI, ML and GenAI on Databricks.",
+    images: [
+      {
+        src: "assets/img/recognition/databricks-executive-forum-title-slide.jpg",
+        caption: "Title slide",
+        alt: "Title slide of the Databricks Executive Forum talk: Pidilite's Data & AI Journey, From Warehouse to Lakehouse",
+        pos: "center 72%",
+      },
+      {
+        src: "assets/img/recognition/databricks-executive-forum-on-stage.jpg",
+        caption: "On stage",
+        alt: "Balachandra Srinevasalu presenting at the Databricks Executive Forum",
+        pos: "center 40%",
+      },
+    ],
+  },
+  {
     title: "Global Power BI & SQL Enablement Facilitator",
     period: "2019",
     body:

@@ -2,8 +2,8 @@ import {
   heroStats, philosophy, journey, education, strategyPhases, competencies,
   aiGenai, governance, cloudPlatforms, outcomes, programs, speaking, speakingAvailability,
   certifications, insights, awards, dashboardKpis,
-} from "./data.js?v=20261104a";
-import { openLightbox } from "./lightbox.js?v=20261104a";
+} from "./data.js?v=20261104b";
+import { openLightbox } from "./lightbox.js?v=20261104b";
 
 const $ = (id) => document.getElementById(id);
 
@@ -246,6 +246,7 @@ function renderSpeaking() {
         (s) => `
       <div class="card list-card">
         ${s.image ? `<button type="button" class="card-media" data-media="${s.image}" data-title="${s.title.replace(/"/g, "&quot;")}" aria-label="View photo: ${s.title.replace(/"/g, "&quot;")}"><img src="${s.image}" alt="${s.imageAlt || s.title}" loading="lazy"></button>` : ""}
+        ${s.images ? `<div class="media-row n${s.images.length}">${s.images.map((m) => `<button type="button" class="card-media" data-media="${m.src}" data-title="${(s.title + " — " + m.caption).replace(/"/g, "&quot;")}" aria-label="View photo: ${m.caption}"><img src="${m.src}" alt="${m.alt || m.caption}" loading="lazy"><span class="media-cap">${m.caption}</span></button>`).join("")}</div>` : ""}
         <div class="period">${s.period}</div>
         <h3>${s.title}</h3>
         <p>${s.body}</p>

@@ -439,20 +439,22 @@ export const speaking = [
     imageAlt: "Balachandra Srinevasalu speaking at Data Engineering Summit 2026, Bengaluru",
   },
   {
-    title: "Global Power BI Enablement Facilitator",
+    title: "Global Power BI & SQL Enablement Facilitator",
     period: "2019",
     body:
-      "Delivered Power BI workshops to business teams across New Delhi, Singapore, and Malaysia; authored facilitator guides and participant learning materials; ran post-training forums and one-on-one coaching that enabled 100+ users to move from Excel to Power BI.",
+      "Ran organisation-wide SQL training to build foundational data literacy ahead of the Power BI rollout, then delivered Microsoft Power BI workshops to business teams across New Delhi, Singapore and Malaysia; authored facilitator guides and participant learning materials; ran post-training forums and one-on-one coaching that enabled 100+ users to move from Excel to Power BI.",
+    images: [
+      {
+        src: "assets/img/recognition/power-bi-workshop-singapore-2019.jpg",
+        caption: "Singapore · June 2019",
+        alt: "Microsoft Power BI workshop with the Finance team in Singapore, 17th to 19th June 2019",
+      },
+    ],
   },
   {
     title: "Coach & Judge — Intelli-Fest Global Hackathons",
     period: "2018 – 2023",
     body: "Mentored teams and judged advanced analytics and data-science submissions at HP's global innovation hackathon, promoting data-driven innovation across the CFO organisation.",
-  },
-  {
-    title: "Organisation-Wide SQL Trainer",
-    period: "2019",
-    body: "Conducted SQL trainings as part of organisational learning initiatives, building foundational data literacy ahead of the Power BI rollout.",
   },
 ];
 

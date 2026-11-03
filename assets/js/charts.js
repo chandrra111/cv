@@ -1,4 +1,4 @@
-import { dashboardCharts } from "./data.js?v=20261101b";
+import { dashboardCharts } from "./data.js?v=20261104a";
 
 function waitForChart(retries = 20) {
   return new Promise((resolve, reject) => {

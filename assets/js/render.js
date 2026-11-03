@@ -2,8 +2,8 @@ import {
   heroStats, philosophy, journey, education, strategyPhases, competencies,
   aiGenai, governance, cloudPlatforms, outcomes, programs, speaking, speakingAvailability,
   certifications, insights, awards, dashboardKpis,
-} from "./data.js?v=20261101b";
-import { openLightbox } from "./lightbox.js?v=20261101b";
+} from "./data.js?v=20261104a";
+import { openLightbox } from "./lightbox.js?v=20261104a";
 
 const $ = (id) => document.getElementById(id);
 
@@ -232,6 +232,12 @@ function renderPrograms() {
   });
 }
 
+function wireMedia(root) {
+  root.querySelectorAll(".card-media").forEach((b) => {
+    b.addEventListener("click", () => openLightbox({ image: b.dataset.media, title: b.dataset.title, subtitle: "", wide: true }));
+  });
+}
+
 function renderSpeaking() {
   const el = $("speakingGrid");
   if (el) {
@@ -239,6 +245,7 @@ function renderSpeaking() {
       .map(
         (s) => `
       <div class="card list-card">
+        ${s.image ? `<button type="button" class="card-media" data-media="${s.image}" data-title="${s.title.replace(/"/g, "&quot;")}" aria-label="View photo: ${s.title.replace(/"/g, "&quot;")}"><img src="${s.image}" alt="${s.imageAlt || s.title}" loading="lazy"></button>` : ""}
         <div class="period">${s.period}</div>
         <h3>${s.title}</h3>
         <p>${s.body}</p>
@@ -247,6 +254,7 @@ function renderSpeaking() {
       )
       .join("");
   }
+  if (el) wireMedia(el);
   const avail = $("speakingAvailability");
   if (avail) avail.textContent = speakingAvailability;
 }
@@ -291,7 +299,7 @@ function renderCertifications() {
 
   el.querySelectorAll(".cert-card").forEach((card) => {
     const c = certifications[Number(card.dataset.index)];
-    if (!c.badgeImage) return;
+    if (!(c.certImage || c.badgeImage)) return;
 
     const open = () =>
       openLightbox({
@@ -300,6 +308,7 @@ function renderCertifications() {
         subtitle: `${c.issuer} &middot; ${c.dateLabel} ${c.date}${c.expires ? " &middot; Valid until " + c.expires : ""}`,
         linkUrl: c.verifyUrl || c.credlyUrl,
         linkLabel: c.verifyLabel || "View on Credly",
+        wide: !!c.certImage,
       });
 
     card.addEventListener("click", open);
@@ -343,13 +352,16 @@ function renderAwards() {
     .map(
       (a, i) => `
     <div class="card award-card">
-      <div class="award-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${AWARD_ICONS[i % AWARD_ICONS.length]}</svg></div>
+      ${a.image
+        ? `<button type="button" class="card-media${a.doc ? " doc" : ""}" data-media="${a.image}" data-title="${a.title.replace(/"/g, "&quot;")}" aria-label="View: ${a.title.replace(/"/g, "&quot;")}"><img src="${a.image}" alt="${a.imageAlt || a.title}" loading="lazy"></button>`
+        : `<div class="award-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${AWARD_ICONS[i % AWARD_ICONS.length]}</svg></div>`}
       <h3 style="font-size:1.05rem;">${a.title}</h3>
       <div style="margin-top:6px;font-size:12px;font-weight:700;color:var(--accent-2);">${a.year}</div>
       <p style="margin-top:10px;font-size:13.5px;color:var(--text-muted);line-height:1.55;">${a.body}</p>
     </div>`
     )
     .join("");
+  wireMedia(el);
 }
 
 export function renderAll() {

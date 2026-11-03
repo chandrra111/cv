@@ -435,6 +435,8 @@ export const speaking = [
       "Spoke at DES 2026, Hotel Radisson Blu ORR, Bangalore, on “Data Quality in the Age of AI: Garbage In, Disaster Out.”",
     linkUrl: "https://des.analyticsindiamag.com/speaker/",
     linkLabel: "View speaker profile",
+    image: "assets/img/recognition/data-engineering-summit-2026-speaker.jpg",
+    imageAlt: "Balachandra Srinevasalu speaking at Data Engineering Summit 2026, Bengaluru",
   },
   {
     title: "Global Power BI Enablement Facilitator",
@@ -483,9 +485,9 @@ export const certifications = [
     badgeImage: "assets/img/certs/microsoft-certified-associate-badge.svg",
   },
   { name: "Professional Certificate in Data Science & Artificial Intelligence", issuer: "IIM Kozhikode (IIMK)", dateLabel: "Issued", date: "2024" },
-  { name: "Digital Personal Data Protection Act (DPDP), 2023 — Certificate Course & Examination", issuer: "DPDPA.com", dateLabel: "Issued", date: "2026" },
+  { name: "Digital Personal Data Protection Act (DPDP), 2023 — Certificate Course & Examination", issuer: "DPDPA.com", dateLabel: "Issued", date: "Mar 8, 2026", certImage: "assets/img/recognition/dpdpa-certificate.png" },
   { name: "Leadership and Talent Management — NPTEL+ Workshop", issuer: "IIT Roorkee (Dept. of Management Studies)", dateLabel: "Issued", date: "2026" },
-  { name: "Step Up To Leadership", issuer: "Dale Carnegie & Associates, Inc.", dateLabel: "Issued", date: "2024" },
+  { name: "Step Up To Leadership", issuer: "Dale Carnegie & Associates, Inc.", dateLabel: "Issued", date: "Oct 2024", certImage: "assets/img/recognition/dale-carnegie-step-up-to-leadership.jpg" },
   {
     name: "Microsoft Certified: Azure Data Engineer Associate",
     issuer: "Microsoft",
@@ -570,9 +572,19 @@ export const insights = {
 
 export const awards = [
   {
-    title: "Pidilite Spirit Award",
-    year: "2024",
-    body: "Recognised for driving the high-impact Microsoft Fabric analytics transformation.",
+    title: "IT Leadership Excellence Award — Winner",
+    year: "Pidilite Industries",
+    body: "Recognised as the winner of the IT Leadership Excellence Award, representing Pidilite Industries.",
+    image: "assets/img/recognition/it-leadership-excellence-award.jpg",
+    imageAlt: "Balachandra Srinevasalu receiving the IT Leadership Excellence Award",
+  },
+  {
+    title: "Spirit of Pidilite Award — Cost Reduction",
+    year: "H2 FY25 · Bronze (Intra Division)",
+    body: "Recognised for the Microsoft Fabric platform consolidation that cut annual platform cost.",
+    image: "assets/img/recognition/spirit-of-pidilite-certificate.jpg",
+    imageAlt: "Spirit of Pidilite Award certificate, Cost Reduction category",
+    doc: true,
   },
   {
     title: "CFO & Rock Star Awards",
@@ -580,9 +592,20 @@ export const awards = [
     body: "Multiple awards from HP's global CFO organisation for impact beyond core responsibilities.",
   },
   {
-    title: "Bronze & Silver VP Awards",
-    year: "2010 – 2014",
-    body: "Genpact recognition for a 43% project revenue increase and delivery excellence.",
+    title: "Genpact Silver Award (CHEERS)",
+    year: "Sep 2013",
+    body: "Certificate of Recognition for exemplary performance and demonstration of Genpact values.",
+    image: "assets/img/recognition/genpact-silver-award.jpg",
+    imageAlt: "Genpact CHEERS Silver Award certificate, September 2013",
+    doc: true,
+  },
+  {
+    title: "Genpact Bronze Award (CHEERS)",
+    year: "2011",
+    body: "Certificate of Recognition for exemplary performance and demonstration of Genpact values.",
+    image: "assets/img/recognition/genpact-bronze-award.jpg",
+    imageAlt: "Genpact CHEERS Bronze Award certificate, 2011",
+    doc: true,
   },
 ];
 

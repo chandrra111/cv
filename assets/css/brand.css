@@ -107,3 +107,23 @@ h1, h2, h3, h4, h5 { font-weight: 700; letter-spacing: -0.02em; }
 .reach-card p { margin-top: 12px; font-size: 1.02rem; line-height: 1.6; color: var(--text-muted); }
 .reach-card .eyebrow { color: var(--hp-blue); }
 .reach-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+
+
+/* --- photos and certificate images on speaking and award cards --- */
+.card-media {
+  display: block; width: 100%; aspect-ratio: 16 / 10; margin: 0 0 16px; padding: 0; overflow: hidden;
+  border-radius: var(--radius-md); background: var(--surface-2); border: 1px solid var(--border); cursor: zoom-in; position: relative;
+}
+.card-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; transition: transform var(--dur-med) var(--ease); }
+.card-media.doc img { object-fit: contain; background: #fff; object-position: center; }
+.card-media:hover img { transform: scale(1.03); }
+.card-media::after {
+  content: "View"; position: absolute; right: 10px; bottom: 10px; padding: 4px 11px; border-radius: 999px; font-size: 11px; font-weight: 700;
+  color: #fff; background: rgba(2, 43, 99, 0.82); opacity: 0; transition: opacity var(--dur-fast) var(--ease);
+}
+.card-media:hover::after, .card-media:focus-visible::after { opacity: 1; }
+.award-card .card-media { text-align: left; }
+
+/* --- large lightbox for photos and certificates --- */
+.lightbox-box.wide { max-width: min(1100px, 94vw); padding: 22px 22px 18px; }
+.lightbox-box.wide .lightbox-img { width: 100%; height: auto; max-height: 74vh; object-fit: contain; padding: 0; border: 0; background: transparent; border-radius: var(--radius-sm); }

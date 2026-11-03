@@ -599,6 +599,13 @@ export const insights = {
 
 export const awards = [
   {
+    title: "Data Leader of the Year — Winner",
+    year: "Data & GenAI Summit & Awards 2026",
+    body: "Winner of the Data Leader of the Year award at the Data & GenAI Summit & Awards 2026, representing Pidilite Industries.",
+    image: "assets/img/recognition/data-leader-of-the-year-2026.jpg",
+    imageAlt: "Balachandra Srinevasalu receiving the Data Leader of the Year award at the Data & GenAI Summit & Awards 2026",
+  },
+  {
     title: "IT Leadership Excellence Award — Winner",
     year: "Pidilite Industries",
     body: "Recognised as the winner of the IT Leadership Excellence Award, representing Pidilite Industries.",

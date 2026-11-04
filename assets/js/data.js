@@ -459,6 +459,20 @@ export const speaking = [
     ],
   },
   {
+    title: "Speaker — HP Digital Curriculum Session",
+    period: "May 2023",
+    body:
+      "Conducted the first in-person Digital Curriculum session for HP's India finance employees, introducing a platform for upskilling in digital transformation with new technologies and methods. More than 90 participants attended.",
+    images: [
+      {
+        src: "assets/img/recognition/hp-digital-curriculum-session-2023.jpg",
+        caption: "90+ participants",
+        alt: "Balachandra Srinevasalu presenting the Digital Curriculum session to more than 90 HP India finance employees",
+        ratio: "5 / 2",
+      },
+    ],
+  },
+  {
     title: "Global Power BI & SQL Enablement Facilitator",
     period: "2019",
     body:

@@ -473,6 +473,26 @@ export const speaking = [
     ],
   },
   {
+    title: "Workshop — Data & BI for Computer Graduates, RYMEC Ballari",
+    period: "4 Oct 2024",
+    body:
+      "Conducted a workshop on Data and BI for computer science graduates at Rao Bahadur Y. Mahabaleswarappa Engineering College (RYMEC), Ballari, covering how data and BI skills are used in industry. The event was also covered in the local press.",
+    images: [
+      {
+        src: "assets/img/recognition/rymec-ballari-workshop-2024.jpg",
+        caption: "With students",
+        alt: "Group photo with computer science students and faculty at Rao Bahadur Y. Mahabaleswarappa Engineering College, Ballari",
+        pos: "center 55%",
+      },
+      {
+        src: "assets/img/recognition/rymec-ballari-press-coverage.jpg",
+        caption: "In the press",
+        alt: "Kannada newspaper report on the technical workshop at Rao Bahadur Y. Mahabaleswarappa Engineering College, Ballari",
+        doc: true,
+      },
+    ],
+  },
+  {
     title: "Global Power BI & SQL Enablement Facilitator",
     period: "2019",
     body:

@@ -2,8 +2,8 @@ import {
   heroStats, philosophy, journey, education, strategyPhases, competencies,
   aiGenai, governance, cloudPlatforms, outcomes, programs, speaking, speakingAvailability,
   certifications, insights, awards, dashboardKpis,
-} from "./data.js?v=20261107a";
-import { openLightbox } from "./lightbox.js?v=20261107a";
+} from "./data.js?v=20261107b";
+import { openLightbox } from "./lightbox.js?v=20261107b";
 
 const $ = (id) => document.getElementById(id);
 
